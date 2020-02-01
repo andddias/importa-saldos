@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bb554034-4592-4474-9cf7-f8ba89f2d8a6" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1WrX9Jwpbk6LC8ZRCTDFmxwvgYI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunManager" selected="Python.disponibilidade">
+    <configuration name="disponibilidade" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PROJETOSALDOTXT" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/disponibilidade.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="disponibilidadefuncoes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PROJETOSALDOTXT" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/disponibilidadefuncoes.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.disponibilidade" />
+        <item itemvalue="Python.disponibilidadefuncoes" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bb554034-4592-4474-9cf7-f8ba89f2d8a6" name="Default Changelist" comment="" />
+      <created>1579908534239</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1579908534239</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1579" height="222" key="GridCell.Tab.0.bottom" timestamp="1580505446868">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1419" height="274" key="GridCell.Tab.0.bottom/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580438010764" />
+    <state width="1345" height="222" key="GridCell.Tab.0.bottom/0.0.1366.728/-81.-900.1440.860@0.0.1366.728" timestamp="1579914417045" />
+    <state width="1579" height="222" key="GridCell.Tab.0.bottom/0.0.1600.860/-1600.0.1600.860@0.0.1600.860" timestamp="1580505446868" />
+    <state width="1579" height="222" key="GridCell.Tab.0.center" timestamp="1580505446867">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1419" height="274" key="GridCell.Tab.0.center/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580438010764" />
+    <state width="1345" height="222" key="GridCell.Tab.0.center/0.0.1366.728/-81.-900.1440.860@0.0.1366.728" timestamp="1579914417045" />
+    <state width="1579" height="222" key="GridCell.Tab.0.center/0.0.1600.860/-1600.0.1600.860@0.0.1600.860" timestamp="1580505446867" />
+    <state width="1579" height="222" key="GridCell.Tab.0.left" timestamp="1580505446867">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1419" height="274" key="GridCell.Tab.0.left/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580438010764" />
+    <state width="1345" height="222" key="GridCell.Tab.0.left/0.0.1366.728/-81.-900.1440.860@0.0.1366.728" timestamp="1579914417045" />
+    <state width="1579" height="222" key="GridCell.Tab.0.left/0.0.1600.860/-1600.0.1600.860@0.0.1600.860" timestamp="1580505446867" />
+    <state width="1579" height="222" key="GridCell.Tab.0.right" timestamp="1580505446868">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1419" height="274" key="GridCell.Tab.0.right/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580438010764" />
+    <state width="1345" height="222" key="GridCell.Tab.0.right/0.0.1366.728/-81.-900.1440.860@0.0.1366.728" timestamp="1579914417045" />
+    <state width="1579" height="222" key="GridCell.Tab.0.right/0.0.1600.860/-1600.0.1600.860@0.0.1600.860" timestamp="1580505446868" />
+    <state width="1419" height="276" key="GridCell.Tab.1.bottom" timestamp="1580183167525">
+      <screen x="-81" y="-900" width="1440" height="860" />
+    </state>
+    <state width="1419" height="276" key="GridCell.Tab.1.bottom/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580183167525" />
+    <state width="1419" height="276" key="GridCell.Tab.1.center" timestamp="1580183167525">
+      <screen x="-81" y="-900" width="1440" height="860" />
+    </state>
+    <state width="1419" height="276" key="GridCell.Tab.1.center/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580183167525" />
+    <state width="1419" height="276" key="GridCell.Tab.1.left" timestamp="1580183167525">
+      <screen x="-81" y="-900" width="1440" height="860" />
+    </state>
+    <state width="1419" height="276" key="GridCell.Tab.1.left/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580183167525" />
+    <state width="1419" height="276" key="GridCell.Tab.1.right" timestamp="1580183167525">
+      <screen x="-81" y="-900" width="1440" height="860" />
+    </state>
+    <state width="1419" height="276" key="GridCell.Tab.1.right/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580183167525" />
+    <state x="246" y="73" key="SettingsEditor" timestamp="1580300297650">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="140" y="-827" key="SettingsEditor/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1579908583173" />
+    <state x="246" y="73" key="SettingsEditor/0.0.1600.860/-1600.0.1600.860@0.0.1600.860" timestamp="1580300297650" />
+    <state x="197" y="-733" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1580179048583">
+      <screen x="-81" y="-900" width="1440" height="860" />
+    </state>
+    <state x="197" y="-733" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1366.728/-81.-900.1440.860@-81.-900.1440.860" timestamp="1580179048583" />
+  </component>
+</project>
