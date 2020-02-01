@@ -14,7 +14,6 @@ def valida_data(data):
     if len(data) != 10:
         return False
     if len(data) == 10:
-        # if data[2] != '/' and data[5] != '/':
         if data[2] == '/' and data[5] == '/':
             dia = int(data[0:2])
             mes = int(data[3:5])
@@ -97,19 +96,7 @@ def obter_saldo_apl(dados_arquivo, dados_banco):
             texto_busca = dados_banco.get('texto_pst_vr_apl2')
             saldo_apl = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca)
 
-    # Caso caso arquivo tipo txt(apl_txt) do banco igual True, obtem dados atraves das posiçoes da linha
-    # caso contrario separa campos pelo ; e obtem dados atraves do indice
-    # depois remove espaços da direira e esquerda
-
-    else:
-        dados = dados_arquivo[dados_banco.get('pst_linha_saldo_apl') - 1]
-        dados = dados.split(';')
-        saldo_apl = dados[dados_banco.get('pst_saldo_apl') - 1]
-        # Caso saldo APL CEF esteja na linha abaixo da setada nos paramentros do banco
-        if saldo_apl == 'SALDO':
-            dados = dados_arquivo[dados_banco.get('pst_linha_saldo_apl')]
-            dados = dados.split(';')
-            saldo_apl = dados[dados_banco.get('pst_saldo_apl') - 1]
+    # Remove Caracteres indesejados e espaços da direira e esquerda
     if saldo_apl != '0':
         saldo_apl = saldo_apl.replace('C', '')
         saldo_apl = saldo_apl.replace('D', '')
@@ -126,7 +113,8 @@ def apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca):
     qt_maxima = dados_banco.get('qt_linhas_busca_saldo_apl')
     dados = dados_arquivo[qt_linhas - linha]
     # Caso a palavra configurada no indice(texto_pst_vr_apl) do banco não exista nos dados da linha,
-    # Sistema entra no laço while e percorre 10 linhas para tentar encontrar a palavra nas linhas acima.
+    # Sistema entra no laço while e percorre "qt_linhas_busca_saldo_apl" linhas configuradas no banco
+    # para tentar encontrar a palavra nas linhas acima ao ponto inicial, "pst_linha_saldo_apl", configurado no banco.
     i = 0
     while palavra not in dados and i in range(qt_maxima) and (linha - 1 - i) > 0:
         dados = dados_arquivo[qt_linhas - linha - i]
@@ -136,7 +124,7 @@ def apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca):
     print(f'dados obtido pelo while: {dados}')
     dados = dados.strip()
     print(f'dados após strip(): {dados}')
-    # Verifica se a palavra configurada no indice(texto_pst_vr_apl) do banco existe nos dados da linha
+    # Confirma se a palavra configurada no indice(texto_pst_vr_apl) do banco existe nos dados da linha
     if palavra in dados:
         dados = dados.replace(' ', ';')
         print(f'dados replace ; : {dados}')
@@ -145,7 +133,7 @@ def apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca):
         saldo_apl = dados[len(dados) - dados_banco.get('pst_saldo_apl')]
         print(saldo_apl)
         return saldo_apl
-    # Caso não obtenha o saldo_apl retorna o valor 0
+    # Caso não obtenha o saldo_apl retorna o valor '0'
     else:
         saldo_apl = '0'
         return saldo_apl
@@ -172,7 +160,7 @@ def busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo):
     if dados is not None:
         # Caso a palavra configurada no indice(contas) do banco não exista nos dados da linha,
         # Sistema entra no laço while e percorre x(qt_linhas_busca_conta) configurada no banco
-        # para tentar encontrar a palavra nas linhas abaixo.
+        # para tentar encontrar a palavra nas linhas abaixo ao ponto inical configurado no banco.
         i = 0
         while palavra not in dados and i in range(qt_maxima) and (linha - 1 + i) < qt_linhas:
             dados = cabecalho[linha - 1 + i]
@@ -209,30 +197,6 @@ def verifica_conta_cc(bancos, cabecalho, tipo):
             if conta != 'Nao Identificada':
                 return True, dados_banco, conta,
     return False,
-
-
-"""
-def verifica_conta_apl(bancos, cabecalho):
-    tipo = 'SALDO_APL'
-    return verifica_conta_cc(bancos, cabecalho, tipo)
-    
-    for chave in bancos.keys():
-        if not bancos[chave].get('apl_incluso') or bancos[chave].get('qt_apl') == 2:
-            # print(f'Chave: {chave}')
-            # Caso campo pst 'pst_linha_cc_apl' = None, não executa as linhas abaixo
-            if bancos[chave].get('pst_linha_cc_apl') is not None:
-                dados = cabecalho[bancos[chave].get('pst_linha_cc_apl') - 1]
-                conta = dados[bancos[chave].get('pst_cc_apl')[0] - 1: bancos[
-                                                                          chave].get('pst_cc_apl')[1] - 1].strip()
-                # print(f'Conta apl: {conta}')
-                # Caso conta CEF esteja na linha abaixo da setada nos paramentros do banco
-                if chave == '104' and conta not in bancos[chave].get('contas'):
-                    dados = cabecalho[bancos[chave].get('pst_linha_cc_apl')]
-                    conta = dados[bancos[chave].get('pst_cc_apl')[0] - 1: bancos[
-                                                                              chave].get('pst_cc_apl')[1] - 1].strip()
-                if conta in bancos[chave].get('contas'):
-                    return True, bancos[chave], conta, chave
-    return False,"""
 
 
 def saldos_conta(data_hoje, dados_arquivo, dados_banco):

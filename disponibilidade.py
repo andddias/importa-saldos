@@ -45,8 +45,11 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'p
 # Dicionario que receberá todos os dados de contas saldos e data
 biblioteca_saldos = {}
 
-# Obtendo caminho completo até a pasta do projeto
+# Retorna um diretorio referente ao caminho completo até a pasta do projeto
+os.chdir('..')
+# Obtendo caminho completo até o diretorio anterior ao diretorio do projeto
 cwd = os.getcwd()
+
 src = cwd + '\\import\\'
 dst = cwd + '\\import\\processado\\'
 
