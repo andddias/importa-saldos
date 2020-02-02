@@ -8,8 +8,8 @@ str_data_forma = '%d/%m/%Y'
 
 # Data comparação
 data_hoje = datetime.strptime('31/01/2020', str_data_forma).date()
-
-print(disponibilidadefuncoes.diminir_um_dia(data_hoje))
+# data_hoje = datetime.today()
+print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
 # Quantidade maxima de linhas a ler para o cabecalho, maior atual APL Bradesco
 cabecalho_linhas = 19
@@ -26,9 +26,6 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'p
                   'pst_linha_cc_apl': 7, 'pst_cc_apl': [69, 75],
                   'pst_linha_saldo_apl': 119, 'pst_saldo_apl': 2, 'qt_linhas_busca_saldo_apl': 20,
                   'contas': ['1416-0', '1417-9']},
-          #'041': {'pst_linha_cc': 3, 'pst_cc': [10, 23], 'pst_data': [], 'pst_saldo_cc': [],
-          #        'cc_txt': False, 'apl_txt': True, 'apl_incluso': False, 'pst_saldo_apl': [],
-          #        'contas': ['06.851005.0-6']},
           '237': {'pst_linha_cc': 2, 'pst_cc': [73, 80], 'pst_data': [1, 11], 'pst_saldo_cc': 1,
                   'cc_txt': True, 'apl_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'qt_apl': 1, 'apl_busca': True, 'texto_pst_vr_apl1': 'Total',
@@ -40,7 +37,13 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'p
                   'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'tico', 'texto_pst_vr_apl2': 'Fundo',
                   'pst_linha_cc_apl': 11, 'pst_cc_apl': [123, 135],
                   'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 9,
-                  'contas': ['13.002957.5', '13.002958.2']}}
+                  'contas': ['13.002957.5', '13.002958.2']},
+          '041': {'pst_linha_cc': 3, 'pst_cc': [10, 23], 'pst_data': [1, 3], 'pst_saldo_cc': 1,
+                  'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
+                  'qt_apl': 1, 'apl_busca': True, 'texto_pst_vr_apl1': 'ATUAL......',
+                  'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 50,
+                  'contas': ['06.851005.0-6']}
+          }
 
 # Dicionario que receberá todos os dados de contas saldos e data
 biblioteca_saldos = {}
