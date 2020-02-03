@@ -48,6 +48,9 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'p
 # Dicionario que receberá todos os dados de contas saldos e data
 biblioteca_saldos = {}
 
+# Guardando maior data obtida para renomear arquivos APL
+maior_data = None
+
 # Retorna um diretorio referente ao caminho completo até a pasta do projeto
 os.chdir('..')
 # Obtendo caminho completo até o diretorio anterior ao diretorio do projeto
@@ -100,8 +103,36 @@ for arquivo_txt in lista_de_arquivos:
                 # Guardando nome do arquivo para depois move-lo para pasta de item processados
                 arquivo_processado = arquivo_txt
 
-        # Verificando e Movendo arquivo para pasta de item processado
         if arquivo_processado is not None:
+            # Preparando dados para renomear arquivos processados
+            conta = conta.replace('.', '')
+            data_rename = saldos.get('data')
+
+            # Guardando maior data para renomear arquivos APL
+            dt = datetime.strptime(data_rename, str_data_forma).date()
+            if maior_data is None:
+                maior_data = dt
+            elif dt > maior_data:
+                maior_data = dt
+
+            data_rename = data_rename[6:10] + data_rename[2:6] + data_rename[0:2]
+            data_rename = data_rename.replace('/', '-')
+            saldo_cc_rename = saldos.get('saldo_cc')
+            saldo_cc_rename = saldo_cc_rename.replace(',', '_')
+            saldo_apl_rename = saldos.get('saldo_apl')
+            saldo_apl_rename = saldo_apl_rename.replace(',', '_')
+            rename_arquivo = f'{data_rename}_{conta}_CC({saldo_cc_rename})_APL({saldo_apl_rename}).txt'
+
+            # Renomeando arquivo processado
+            try:
+                os.rename(os.path.join(src, arquivo_processado), os.path.join(src, rename_arquivo))
+            except FileExistsError:
+                pass
+
+            # Guardando novo nome em arquivo_processado
+            arquivo_processado = rename_arquivo
+
+            # Verificando e Movendo arquivo para pasta de item processado
             shutil.move(os.path.join(src, arquivo_processado), os.path.join(dst, arquivo_processado))
 
 # obtendo lista de arquivos restantes
@@ -112,6 +143,7 @@ lista_de_arquivos = os.listdir(src)
 for arquivo_txt in lista_de_arquivos:
 
     arquivo_processado = None
+    saldo_apl_rename = None
 
     if os.path.isfile(src + arquivo_txt) and arquivo_txt.split('.')[1].lower() in ['txt', 'csv']:
         with open(src + arquivo_txt) as arquivo:
@@ -142,6 +174,9 @@ for arquivo_txt in lista_de_arquivos:
                 # Recebendo os dados apartir da função
                 saldo_apl_atualizado = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco)
 
+                # Guardando Saldo APL na variavel que irá renomear arquivo
+                saldo_apl_rename = saldo_apl_atualizado
+
                 # Obtendo saldo apl já guardado e somando saldo_apl recebido da função
                 if conta in biblioteca_saldos:
                     saldo_apl_atualizado = float(saldo_apl_atualizado.replace(',', '.'))
@@ -160,8 +195,28 @@ for arquivo_txt in lista_de_arquivos:
                 # Guardando nome do arquivo para depois move-lo para pasta de item processados
                 arquivo_processado = arquivo_txt
 
-        # Verificando e Movendo arquivo para pasta de item processado
         if arquivo_processado is not None:
+            # Preparando dados para renomear arquivos processados
+            conta = conta.replace('.', '')
+            if maior_data is None:
+                data_rename = data_hoje.strftime(str_data_forma)
+            else:
+                data_rename = maior_data.strftime(str_data_forma)
+            data_rename = data_rename[6:10] + data_rename[2:6] + data_rename[0:2]
+            data_rename = data_rename.replace('/', '-')
+            saldo_apl_rename = saldo_apl_rename.replace(',', '_')
+            rename_arquivo = f'{data_rename}_{conta}_APL({saldo_apl_rename}).txt'
+
+            # Renomeando arquivo processado
+            try:
+                os.rename(os.path.join(src, arquivo_processado), os.path.join(src, rename_arquivo))
+            except FileExistsError:
+                pass
+
+            # Guardando novo nome em arquivo_processado
+            arquivo_processado = rename_arquivo
+
+            # Verificando e Movendo arquivo para pasta de item processado
             shutil.move(os.path.join(src, arquivo_processado), os.path.join(dst, arquivo_processado))
 
 # print(biblioteca_saldos)

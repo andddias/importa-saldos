@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from decimal import Decimal
 
 str_data_forma = '%d/%m/%Y'
 
@@ -308,7 +309,7 @@ def soma_saldos_apl(saldos):
     valores = []
     for saldo_apl in saldos:
         saldo_apl = saldo_apl.replace('.', '')
-        saldo_apl = float(saldo_apl.replace(',', '.'))
+        saldo_apl = Decimal(saldo_apl.replace(',', '.'))
         valores.append(saldo_apl)
     saldo_apl = sum(valores)
     saldo_apl = str(saldo_apl).replace('.', ',')
