@@ -203,6 +203,9 @@ def mes_ano_banrisul(dados_arquivo):
 
 
 def saldos_conta(data_hoje, dados_arquivo, dados_banco):
+    # Variavel para guardar dia anterior p/ comparação dia extrato banco Banrisul
+    dia_anterior = None
+
     idx = len(dados_arquivo) - 1
     # Caso seja banco Banrisul, busca mes e ano a partir da função
     if dados_banco.get('contas')[0] == '06.851005.0-6':
@@ -217,6 +220,22 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
             try:
                 # Tentando converter em inteiro para testar dia no formato valido
                 data_linha = int(data_linha)
+                if dia_anterior is None:
+                    dia_anterior = data_linha
+                elif dia_anterior > data_linha:
+                    dia_anterior = data_linha
+                # Virada de mês Banrisul, ajustando complemento data
+                else:
+                    # Acrescentando primeiro dia ao complemento da data
+                    data_str = '01' + complemento_data
+                    # Convertendo data srt para tipo Date
+                    data = datetime.strptime(data_str, str_data_forma).date()
+                    # Diminuindo um dia para alterar o mes e ano(quando for o caso)
+                    data = diminir_um_dia(data)
+                    # Convertendo data tipo Date para str
+                    data_str = data.strftime(str_data_forma)
+                    # Ajustando complemento da data
+                    complemento_data = data_str[2:10]
                 # Convertendo novamente em string e adicionando 0 a esquerda para completar 2 digitos
                 data_linha = (str(data_linha)).zfill(2)
             except ValueError:
@@ -255,11 +274,13 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
                     dados = dados_arquivo[idx + i]
                     # obtendo saldos cc
                     saldo_cc = obter_saldo_cc(dados, dados_banco)
+                    # interrompendo busca while
                     break
                 # Caso qualquer outro banco obtem o Saldo CC de maneira padrão
                 else:
                     # obtendo saldos cc
                     saldo_cc = obter_saldo_cc(dados_arquivo[idx], dados_banco)
+                    # interrompendo busca while
                     break
         idx -= 1
     # Testa se dados do banco informa que arquivo tambem tem dados de aplicação

@@ -7,8 +7,8 @@ import os
 str_data_forma = '%d/%m/%Y'
 
 # Data comparação
-data_hoje = datetime.strptime('31/01/2020', str_data_forma).date()
-# data_hoje = datetime.today()
+# data_hoje = datetime.strptime('29/01/2020', str_data_forma).date()
+data_hoje = datetime.today()
 print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
 # Quantidade maxima de linhas a ler para o cabecalho, maior atual APL Bradesco
