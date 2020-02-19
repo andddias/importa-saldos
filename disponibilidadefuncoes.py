@@ -68,39 +68,40 @@ def obter_saldo_cc(dados_linha, dados_banco):
     # depois remove caracteres indesejados e espaços da direira e esquerda
     if dados_banco.get('cc_txt'):
         dados = converte_dados_lista(dados_linha)
-        print(f'Linha Saldo Conta Corrente obtida após conversão: {dados}')
+        # print(f'Linha Saldo Conta Corrente obtida após conversão: {dados}')
         saldo_cc = dados[len(dados) - dados_banco.get('pst_saldo_cc')]
-        print(f'Saldo Conta Corrente: {saldo_cc}')
-    saldo_cc = saldo_cc.replace('C', '')
-    saldo_cc = saldo_cc.replace('D', '')
-    saldo_cc = saldo_cc.replace('.', '')
-    saldo_cc = saldo_cc.replace('-', '')
-    saldo_cc = saldo_cc.strip()
+        # print(f'Saldo Conta Corrente: {saldo_cc}')
+    saldo_cc = tratar_valor(saldo_cc)
     return saldo_cc
 
 
-def obter_saldo_apl(dados_arquivo, dados_banco):
-    # Buscar linha de saldo apl pelos parametros configurados no banco
-    if dados_banco.get('apl_busca'):
-        texto_busca = dados_banco.get('texto_pst_vr_apl1')
-        saldo_apl = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca)
-        if dados_banco.get('qt_apl') == 2:
-            texto_busca = dados_banco.get('texto_pst_vr_apl2')
-            saldo_apl2 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca)
-            saldo_apl = soma_saldos_apl([saldo_apl, saldo_apl2])
-        # Caso Não obtenha saldo da apl pelo texto 'texto_pst_vr_apl1' e não tenha 2 aplicações
-        if saldo_apl == 0:
-            texto_busca = dados_banco.get('texto_pst_vr_apl2')
-            saldo_apl = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca)
+def obter_saldo_apl(dados_arquivo, dados_banco, texto_apl):
+    if len(texto_apl) == 1:
+        texto_busca1 = texto_apl.get('apl1')
+        saldo_apl1 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca1)
+        if saldo_apl1 is not None:
+            saldo_apl1 = tratar_valor(saldo_apl1)
+        # retorna na segunda posição o valor '0', pois deve retornar dois numeros já que o máximo de apls é 2
+        return [saldo_apl1, '0']
+    elif len(texto_apl) == 2:
+        texto_busca1 = texto_apl.get('apl1')
+        texto_busca2 = texto_apl.get('apl2')
+        saldo_apl1 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca1)
+        saldo_apl2 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca2)
+        if saldo_apl1 is not None:
+            saldo_apl1 = tratar_valor(saldo_apl1)
+        if saldo_apl2 is not None:
+            saldo_apl2 = tratar_valor(saldo_apl2)
+        return [saldo_apl1, saldo_apl2]
 
-    # Remove Caracteres indesejados e espaços da direira e esquerda
-    if saldo_apl != '0':
-        saldo_apl = saldo_apl.replace('C', '')
-        saldo_apl = saldo_apl.replace('D', '')
-        saldo_apl = saldo_apl.replace('.', '')
-        saldo_apl = saldo_apl.replace('-', '')
-        saldo_apl = saldo_apl.strip()
-    return saldo_apl
+
+def tratar_valor(valor):
+    valor = valor.replace('C', '')
+    valor = valor.replace('D', '')
+    valor = valor.replace('.', '')
+    valor = valor.replace('-', '')
+    valor = valor.strip()
+    return valor
 
 
 def apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca):
@@ -120,13 +121,13 @@ def apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca):
     # Confirma se a palavra configurada no indice(texto_pst_vr_apl) do banco existe nos dados da linha
     if palavra in dados:
         dados = converte_dados_lista(dados)
-        print(f'Linha aplicação obtida após conversão: {dados}')
+        # print(f'Linha aplicação obtida após conversão: {dados}')
         saldo_apl = dados[len(dados) - dados_banco.get('pst_saldo_apl')]
-        print(f'Saldo aplicação: {saldo_apl}')
+        # print(f'Saldo aplicação: {saldo_apl}')
         return saldo_apl
-    # Caso não obtenha o saldo_apl retorna o valor '0'
+    # Caso não obtenha o saldo_apl retorna o valor None
     else:
-        saldo_apl = '0'
+        saldo_apl = None
         return saldo_apl
 
 
@@ -160,7 +161,7 @@ def busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo):
 
         if palavra in dados:
             conta = texto_busca
-            print(f'Conta obtida: {conta}')
+            # print(f'Conta obtida: {conta}')
             return conta
         # Caso não obtenha a conta retorna o valor Nao Identificada
         else:
@@ -203,13 +204,13 @@ def mes_ano_banrisul(dados_arquivo):
     return '/00/0000'
 
 
-def saldos_conta(data_hoje, dados_arquivo, dados_banco):
+def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
     # Variavel para guardar dia anterior p/ comparação dia extrato banco Banrisul
     dia_anterior = None
 
     idx = len(dados_arquivo) - 1
     # Caso seja banco Banrisul, busca mes e ano a partir da função
-    if dados_banco.get('contas')[0] == '06.851005.0-6':
+    if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
         complemento_data = mes_ano_banrisul(dados_arquivo)
     while idx >= 0:
         # Obtendo dados da linha
@@ -217,7 +218,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
         # Obtendo data apartir da função
         data_linha = obter_data(dados_linha, dados_banco)
         # Caso seja banco Banrisul, complementa dia recebido com complemento de mes e ano
-        if dados_banco.get('contas')[0] == '06.851005.0-6':
+        if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
             try:
                 # Tentando converter em inteiro para testar dia no formato valido
                 data_linha = int(data_linha)
@@ -246,7 +247,8 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
 
         # Caso seja banco banrisul procura data inferior a data do sistema para pegar o saldo CC
         # Se linha de busca ultrapassar dados MOVIMENTOS DA CONTA CORRENTE buscará saldo pelo caso abaixo
-        if dados_banco.get('contas')[0] == '06.851005.0-6' and ('MOVIMENTOS DA CONTA CORRENTE' in dados_arquivo[idx]):
+        if list(dados_banco.get('contas'))[0] == '06.851005.0-6' and (
+                'MOVIMENTOS DA CONTA CORRENTE' in dados_arquivo[idx]):
             i = 0
             while 'SALDO ANT EM' not in dados_arquivo[idx + i] and idx + i < len(dados_arquivo):
                 i += 1
@@ -258,8 +260,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
                 data_linha = datetime.strptime(data_linha, str_data_forma).date()
                 if data_linha.toordinal() < data_hoje.toordinal():
                     # obtendo saldos cc
-                    saldo_cc = dados[len(dados) - 1]
-                    # print(f'Saldo Conta Corrente: {saldo_cc}')
+                    saldo_cc = tratar_valor(dados[len(dados) - 1])
                     # interrompendo busca while
                     break
         # Validando se string recebida é uma data, caso seja data será convertida em tipo date
@@ -268,7 +269,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
             if data_linha.toordinal() < data_hoje.toordinal():
                 # Caso seja banco banrisul procura data inferior a data do sistema para pegar o saldo CC
                 # A linha do saldo conta corrente obedece a personalização abaixo
-                if dados_banco.get('contas')[0] == '06.851005.0-6':
+                if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
                     i = 0
                     while 'SALDO NA DATA' not in dados_arquivo[idx + i] and idx + i < len(dados_arquivo):
                         i += 1
@@ -287,20 +288,29 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco):
     # Testa se dados do banco informa que arquivo tambem tem dados de aplicação
     # Caso positivo obtem saldos de aplicação
     if dados_banco.get('apl_incluso'):
-        saldo_apl = obter_saldo_apl(dados_arquivo, dados_banco)
+        if dados_banco.get('contas').get(conta).get('apl') is not None:
+            texto_apl = dados_banco.get('contas').get(conta).get('apl')
+            saldo_apl = obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
+        else:
+            saldo_apl = '0', '0'
     else:
-        saldo_apl = '0'
+        if len(dados_banco.get('contas').get(conta).get('apl')) == 1:
+            saldo_apl = None, '0'
+        elif len(dados_banco.get('contas').get(conta).get('apl')) == 2:
+            saldo_apl = None, None
 
     try:
         # Convertendo data p/ str
         data_linha = data_linha.strftime(str_data_forma)
     except AttributeError:
         data_hoje = data_hoje.strftime(str_data_forma)
-        data_linha = f'Não Localizado data valida anterior a hoje({data_hoje})'
-        saldo_cc = f'Verificar arquivo atualizado dessa conta'
+        # retorna a data de realização do processo de obtenção de saldo
+        data_linha = data_hoje
+        # retorna None no saldo para indicar a pencia de importação
+        saldo_cc = None
 
     # Guardando as informações no biblioteca de saldos
-    saldos = {'data': data_linha, 'saldo_cc': saldo_cc, 'saldo_apl': saldo_apl}
+    saldos = {'data': data_linha, 'saldo_cc': saldo_cc, 'apl1': saldo_apl[0], 'apl2': saldo_apl[1]}
 
     return saldos
 

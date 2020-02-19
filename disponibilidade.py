@@ -1,5 +1,6 @@
-from datetime import datetime, date
+from datetime import datetime
 import disponibilidadefuncoes
+from decimal import Decimal
 import shutil
 import csv
 import os
@@ -7,7 +8,7 @@ import os
 str_data_forma = '%d/%m/%Y'
 
 # Data comparação
-# data_hoje = datetime.strptime('29/01/2020', str_data_forma).date()
+# data_hoje = datetime.strptime('18/02/2020', str_data_forma).date()
 data_hoje = datetime.today()
 print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
@@ -18,31 +19,52 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'p
                   'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'DIFERENCIA', 'texto_pst_vr_apl2': 'Prefixado',
                   'pst_linha_saldo_apl': 8, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 8,
-                  'contas': ['21397-7', '52500-6', '52600-2', '52901-X', '52903-6', '52904-4',
-                             '152600-6', '152700-2', '152800-9', '152900-5']},
+                  'contas': {'21397-7': {'apl': None},
+                             '52500-6': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
+                             '52600-2': {'apl': {'apl1': 'DIFERENCIA'}},
+                             '52901-X': {'apl': None},
+                             '52903-6': {'apl': None},
+                             '52904-4': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
+                             '152600-6': {'apl': None},
+                             '152700-2': {'apl': None},
+                             '152800-9': {'apl': None},
+                             '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
+                             }
+                  },
           '104': {'pst_linha_cc': 15, 'pst_cc': [30, 36], 'pst_data': [5, 15], 'pst_saldo_cc': 2,
                   'cc_txt': True, 'apl_txt': False, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
                   'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'PREMIUM', 'texto_pst_vr_apl2': 'REFDI',
                   'pst_linha_cc_apl': 7, 'pst_cc_apl': [69, 75],
-                  'pst_linha_saldo_apl': 119, 'pst_saldo_apl': 2, 'qt_linhas_busca_saldo_apl': 20,
-                  'contas': ['1416-0', '1417-9']},
+                  'pst_linha_saldo_apl': 119, 'pst_saldo_apl': 2, 'qt_linhas_busca_saldo_apl': 50,
+                  'contas': {'1416-0': {'apl': {'apl1': 'REFDI'}},
+                             '1417-9': {'apl': {'apl1': 'PREMIUM'}}
+                             }
+                  },
           '237': {'pst_linha_cc': 2, 'pst_cc': [73, 80], 'pst_data': [1, 11], 'pst_saldo_cc': 1,
                   'cc_txt': True, 'apl_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'qt_apl': 1, 'apl_busca': True, 'texto_pst_vr_apl1': 'Total',
                   'pst_linha_cc_apl': 19, 'pst_cc_apl': [27, 34],
                   'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 5,
-                  'contas': ['29383-0', '29384-9']},
+                  'contas': {'29383-0': {'apl': {'apl1': 'Total'}},
+                             '29384-9': {'apl': {'apl1': 'Total'}}
+                             }
+                  },
           '033': {'pst_linha_cc': 3, 'pst_cc': [125, 137], 'pst_data': [4, 14], 'pst_saldo_cc': 1,
                   'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'tico', 'texto_pst_vr_apl2': 'Fundo',
                   'pst_linha_cc_apl': 11, 'pst_cc_apl': [123, 135],
                   'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 9,
-                  'contas': ['13.002957.5', '13.002958.2']},
+                  'contas': {'13.002957.5': {'apl': {'apl1': 'tico', 'apl2': 'Fundo'}},
+                             '13.002958.2': {'apl': {'apl1': 'tico', 'apl2': 'Fundo'}}
+                             }
+                  },
           '041': {'pst_linha_cc': 3, 'pst_cc': [10, 23], 'pst_data': [1, 3], 'pst_saldo_cc': 1,
                   'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'qt_apl': 1, 'apl_busca': True, 'texto_pst_vr_apl1': 'ATUAL......',
                   'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 50,
-                  'contas': ['06.851005.0-6']}
+                  'contas': {'06.851005.0-6': {'apl': {'apl1': 'ATUAL......'}}
+                             }
+                  }
           }
 
 # Dicionario que receberá todos os dados de contas saldos e data
@@ -61,6 +83,26 @@ dst = cwd + '\\import\\processado\\'
 
 lista_de_arquivos = os.listdir(src)
 # print(lista_de_arquivos)
+
+# Prenchendo os dados de todas as contas com None
+for dados_banco in bancos.values():
+    # print(dados_banco)
+    for conta in dados_banco['contas']:
+        saldos = {'data': None, 'saldo_cc': None, 'apl1': None, 'apl2': None}
+        biblioteca_saldos[conta] = saldos
+
+# Removendo arquivo anterior de disponibilidade_dia_anterior.csv
+try:
+    os.remove(os.path.join(cwd + '\\receita\\', 'disponibilidade_dia_anterior.csv'))
+except FileNotFoundError:
+    print('Arquivo disponibilidade_dia_anterior.csv não encontrado para deletar')
+
+# Renomeando arquivo de diponibilidade do dia anterior
+try:
+    os.rename(os.path.join(cwd + '\\receita\\', 'disponibilidade.csv'),
+              os.path.join(cwd + '\\receita\\', 'disponibilidade_dia_anterior.csv'))
+except FileNotFoundError:
+    print('Arquivo disponibilidade.csv não encontrado para renomear')
 
 # Percorrendo lista de arquivos para guardar primeiramente arquivos com saldos cc
 # ou que tenham saldos cc e de aplicações no mesmo arquivo
@@ -95,7 +137,7 @@ for arquivo_txt in lista_de_arquivos:
                 dados_arquivo = arquivo.readlines()
 
                 # Recebendo os dados apartir da função
-                saldos = disponibilidadefuncoes.saldos_conta(data_hoje, dados_arquivo, dados_banco)
+                saldos = disponibilidadefuncoes.saldos_conta(data_hoje, dados_arquivo, dados_banco, conta)
 
                 # Guardando as informações no biblioteca de saldos
                 biblioteca_saldos[conta] = saldos
@@ -117,11 +159,18 @@ for arquivo_txt in lista_de_arquivos:
 
             data_rename = data_rename[6:10] + data_rename[2:6] + data_rename[0:2]
             data_rename = data_rename.replace('/', '-')
-            saldo_cc_rename = saldos.get('saldo_cc')
+            if saldos.get('saldo_cc') is not None:
+                saldo_cc_rename = saldos.get('saldo_cc')
+            else:
+                saldo_cc_rename = '0'
             saldo_cc_rename = saldo_cc_rename.replace(',', '_')
-            saldo_apl_rename = saldos.get('saldo_apl')
-            saldo_apl_rename = saldo_apl_rename.replace(',', '_')
-            rename_arquivo = f'{data_rename}_{conta}_CC({saldo_cc_rename})_APL({saldo_apl_rename}).txt'
+            if saldos.get('apl1') is not None:
+                saldo_apl_rename = saldos.get('apl1')
+                saldo_apl_rename = saldo_apl_rename.replace(',', '_')
+
+                rename_arquivo = f'{data_rename}_{conta}_CC({saldo_cc_rename})_APL({saldo_apl_rename}).txt'
+            else:
+                rename_arquivo = f'{data_rename}_{conta}_CC({saldo_cc_rename}).txt'
 
             # Renomeando arquivo processado
             try:
@@ -172,25 +221,19 @@ for arquivo_txt in lista_de_arquivos:
                     print(f'{idx}{item}') """
 
                 # Recebendo os dados apartir da função
-                saldo_apl_atualizado = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco)
+                texto_apl = dados_banco.get('contas')[conta]['apl']
+                saldo_apl = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
 
-                # Guardando Saldo APL na variavel que irá renomear arquivo
-                saldo_apl_rename = saldo_apl_atualizado
+                # Verificando saldos apls já guardados
+                if saldo_apl[0] is None and saldo_apl[1] is not None:
+                    biblioteca_saldos[conta]['apl2'] = saldo_apl[1]
+                    # Guardando Saldo APL na variavel que irá renomear arquivo
+                    saldo_apl_rename = saldo_apl[1]
 
-                # Obtendo saldo apl já guardado e somando saldo_apl recebido da função
-                if conta in biblioteca_saldos:
-                    saldo_apl_atualizado = float(saldo_apl_atualizado.replace(',', '.'))
-                    if biblioteca_saldos[conta].get('saldo_apl') is not None:
-                        saldo_apl_anterior = float(biblioteca_saldos[conta].get('saldo_apl').replace(',', '.'))
-                    else:
-                        saldo_apl_anterior = 0
-                    saldo_apl_atualizado += saldo_apl_anterior
-                    saldo_apl_atualizado = str(saldo_apl_atualizado).replace('.', ',')
-                    # Guardando as informações no biblioteca de saldos
-                    biblioteca_saldos[conta]['saldo_apl'] = saldo_apl_atualizado
-                else:
-                    # Guardando as informações no biblioteca de saldos
-                    biblioteca_saldos[conta] = {'saldo_apl': saldo_apl_atualizado}
+                if saldo_apl[0] is not None:
+                    biblioteca_saldos[conta]['apl1'] = saldo_apl[0]
+                    # Guardando Saldo APL na variavel que irá renomear arquivo
+                    saldo_apl_rename = saldo_apl[0]
 
                 # Guardando nome do arquivo para depois move-lo para pasta de item processados
                 arquivo_processado = arquivo_txt
@@ -219,16 +262,53 @@ for arquivo_txt in lista_de_arquivos:
             # Verificando e Movendo arquivo para pasta de item processado
             shutil.move(os.path.join(src, arquivo_processado), os.path.join(dst, arquivo_processado))
 
-# print(biblioteca_saldos)
-
 arquivo = 'receita/disponibilidade.csv'
 with open(arquivo, 'w', newline='') as arquivo_csv:
     escritor = csv.writer(arquivo_csv, delimiter=';')
-    escritor.writerow(('CONTA', 'DATA', 'SALDO CC', 'SALDO APL'))
+    escritor.writerow(('CONTA', 'DATA', 'SALDO CC', 'SALDO APL1', 'SALDO APL2', 'TOTAL'))
+    total_cc = []
+    total_apl1 = []
+    total_apl2 = []
     for chave in biblioteca_saldos:
         conta = chave
         data = biblioteca_saldos[chave].get('data')
+
         saldo_cc = biblioteca_saldos[chave].get('saldo_cc')
-        saldo_apl = biblioteca_saldos[chave].get('saldo_apl')
-        item = (conta, data, saldo_cc, saldo_apl)
+        # verifica se há valor para validar se foi importado ou não
+        if saldo_cc is not None:
+            # Convertendo valores para calcular o total
+            cc = Decimal(saldo_cc.replace(',', '.'))
+            total_cc.append(cc)
+        else:
+            saldo_cc = 'NÃO IMPORTADO'
+            cc = 0
+            total_cc.append(cc)
+
+        saldo_apl1 = biblioteca_saldos[chave].get('apl1')
+        # verifica se há valor para validar se foi importado ou não
+        if saldo_apl1 is not None:
+            apl1 = Decimal(saldo_apl1.replace(',', '.'))
+            total_apl1.append(apl1)
+        else:
+            saldo_apl1 = 'NÃO IMPORTADO'
+            apl1 = 0
+            total_apl1.append(apl1)
+
+        saldo_apl2 = biblioteca_saldos[chave].get('apl2')
+        # verifica se há valor para validar se foi importado ou não
+        if saldo_apl2 is not None:
+            apl2 = Decimal(saldo_apl2.replace(',', '.'))
+            total_apl2.append(apl2)
+        else:
+            saldo_apl2 = 'NÃO IMPORTADO'
+            apl2 = 0
+            total_apl2.append(apl2)
+
+        total = str(cc + apl1 + apl2).replace('.', ',')
+        item = (conta, data, saldo_cc, saldo_apl1, saldo_apl2, total)
         escritor.writerow(item)
+    total_geral_cc = str(sum(total_cc)).replace('.', ',')
+    total_geral_apl1 = str(sum(total_apl1)).replace('.', ',')
+    total_geral_apl2 = str(sum(total_apl2)).replace('.', ',')
+    total_geral = str(sum(total_cc) + sum(total_apl1) + sum(total_apl2)).replace('.', ',')
+    escritor.writerow(('TOTAL GERAL', None, total_geral_cc, total_geral_apl1, total_geral_apl2, total_geral))
