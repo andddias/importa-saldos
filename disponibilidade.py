@@ -8,17 +8,16 @@ import os
 str_data_forma = '%d/%m/%Y'
 
 # Data comparação
-# data_hoje = datetime.strptime('18/02/2020', str_data_forma).date()
+# data_hoje = datetime.strptime('19/02/2020', str_data_forma).date()
 data_hoje = datetime.today()
 print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
 # Quantidade maxima de linhas a ler para o cabecalho, maior atual APL Bradesco
 cabecalho_linhas = 19
 # Bancos posições e contas
-bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'pst_saldo_cc': 2,
-                  'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
-                  'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'DIFERENCIA', 'texto_pst_vr_apl2': 'Prefixado',
-                  'pst_linha_saldo_apl': 8, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 8,
+bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
+                  'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_saldo_apl': 8, 'pst_saldo_apl': 1,
                   'contas': {'21397-7': {'apl': None},
                              '52500-6': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
                              '52600-2': {'apl': {'apl1': 'DIFERENCIA'}},
@@ -31,37 +30,33 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_cc': [31, 39], 'pst_data': [4, 14], 'p
                              '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
                              }
                   },
-          '104': {'pst_linha_cc': 15, 'pst_cc': [30, 36], 'pst_data': [5, 15], 'pst_saldo_cc': 2,
-                  'cc_txt': True, 'apl_txt': False, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
-                  'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'PREMIUM', 'texto_pst_vr_apl2': 'REFDI',
-                  'pst_linha_cc_apl': 7, 'pst_cc_apl': [69, 75],
-                  'pst_linha_saldo_apl': 119, 'pst_saldo_apl': 2, 'qt_linhas_busca_saldo_apl': 50,
+          '104': {'pst_linha_cc': 15, 'pst_data': 1, 'pst_saldo_cc': -2,
+                  'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
+                  'pst_linha_cc_apl': 7,
+                  'pst_linha_saldo_apl': 119, 'pst_saldo_apl': 2,
                   'contas': {'1416-0': {'apl': {'apl1': 'REFDI'}},
                              '1417-9': {'apl': {'apl1': 'PREMIUM'}}
                              }
                   },
-          '237': {'pst_linha_cc': 2, 'pst_cc': [73, 80], 'pst_data': [1, 11], 'pst_saldo_cc': 1,
-                  'cc_txt': True, 'apl_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
-                  'qt_apl': 1, 'apl_busca': True, 'texto_pst_vr_apl1': 'Total',
-                  'pst_linha_cc_apl': 19, 'pst_cc_apl': [27, 34],
-                  'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 5,
+          '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
+                  'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_cc_apl': 19,
+                  'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1,
                   'contas': {'29383-0': {'apl': {'apl1': 'Total'}},
                              '29384-9': {'apl': {'apl1': 'Total'}}
                              }
                   },
-          '033': {'pst_linha_cc': 3, 'pst_cc': [125, 137], 'pst_data': [4, 14], 'pst_saldo_cc': 1,
-                  'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
-                  'qt_apl': 2, 'apl_busca': True, 'texto_pst_vr_apl1': 'tico', 'texto_pst_vr_apl2': 'Fundo',
-                  'pst_linha_cc_apl': 11, 'pst_cc_apl': [123, 135],
-                  'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 9,
+          '033': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
+                  'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_cc_apl': 11,
+                  'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1,
                   'contas': {'13.002957.5': {'apl': {'apl1': 'tico', 'apl2': 'Fundo'}},
                              '13.002958.2': {'apl': {'apl1': 'tico', 'apl2': 'Fundo'}}
                              }
                   },
-          '041': {'pst_linha_cc': 3, 'pst_cc': [10, 23], 'pst_data': [1, 3], 'pst_saldo_cc': 1,
-                  'cc_txt': True, 'apl_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
-                  'qt_apl': 1, 'apl_busca': True, 'texto_pst_vr_apl1': 'ATUAL......',
-                  'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1, 'qt_linhas_busca_saldo_apl': 50,
+          '041': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
+                  'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
                   'contas': {'06.851005.0-6': {'apl': {'apl1': 'ATUAL......'}}
                              }
                   }
@@ -82,25 +77,23 @@ src = cwd + '\\import\\'
 dst = cwd + '\\import\\processado\\'
 
 lista_de_arquivos = os.listdir(src)
-# print(lista_de_arquivos)
 
 # Prenchendo os dados de todas as contas com None
 for dados_banco in bancos.values():
-    # print(dados_banco)
     for conta in dados_banco['contas']:
         saldos = {'data': None, 'saldo_cc': None, 'apl1': None, 'apl2': None}
         biblioteca_saldos[conta] = saldos
 
 # Removendo arquivo anterior de disponibilidade_dia_anterior.csv
 try:
-    os.remove(os.path.join(cwd + '\\receita\\', 'disponibilidade_dia_anterior.csv'))
+    os.remove(os.path.join(cwd, 'disponibilidade_dia_anterior.csv'))
 except FileNotFoundError:
     print('Arquivo disponibilidade_dia_anterior.csv não encontrado para deletar')
 
 # Renomeando arquivo de diponibilidade do dia anterior
 try:
-    os.rename(os.path.join(cwd + '\\receita\\', 'disponibilidade.csv'),
-              os.path.join(cwd + '\\receita\\', 'disponibilidade_dia_anterior.csv'))
+    os.rename(os.path.join(cwd, 'disponibilidade.csv'),
+              os.path.join(cwd, 'disponibilidade_dia_anterior.csv'))
 except FileNotFoundError:
     print('Arquivo disponibilidade.csv não encontrado para renomear')
 
@@ -116,10 +109,6 @@ for arquivo_txt in lista_de_arquivos:
             for contador in range(0, cabecalho_linhas):
                 ln_arquivo = arquivo.readline()
                 cabecalho.append(ln_arquivo)
-
-            """
-            for idx, item in enumerate(cabecalho):
-                print(f'{idx} - {item}')  """
 
             # Caso boolena verdadeiro recebe os parametros para iniciar função de obtenção saldos,
             # caso falso na variavel dados_banco recebe lista de valores testados para impressão no
@@ -216,10 +205,6 @@ for arquivo_txt in lista_de_arquivos:
                 arquivo.seek(0)
                 dados_arquivo = arquivo.readlines()
 
-                """ # impressao de teste
-                for idx, item in enumerate(dados_arquivo):
-                    print(f'{idx}{item}') """
-
                 # Recebendo os dados apartir da função
                 texto_apl = dados_banco.get('contas')[conta]['apl']
                 saldo_apl = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
@@ -262,7 +247,7 @@ for arquivo_txt in lista_de_arquivos:
             # Verificando e Movendo arquivo para pasta de item processado
             shutil.move(os.path.join(src, arquivo_processado), os.path.join(dst, arquivo_processado))
 
-arquivo = 'receita/disponibilidade.csv'
+arquivo = 'disponibilidade.csv'
 with open(arquivo, 'w', newline='') as arquivo_csv:
     escritor = csv.writer(arquivo_csv, delimiter=';')
     escritor.writerow(('CONTA', 'DATA', 'SALDO CC', 'SALDO APL1', 'SALDO APL2', 'TOTAL'))

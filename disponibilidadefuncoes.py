@@ -11,7 +11,6 @@ def diminir_um_dia(data):
 
 
 def valida_data(data):
-    # print(f'valida data: {data}')
     if len(data) != 10:
         return False
     if len(data) == 10:
@@ -43,34 +42,40 @@ def valida_data(data):
 
 
 def obter_data(dados_linha, dados_banco):
-    # Caso caso arquivo tipo txt(cc_txt) do banco igual True, obtem dados atraves das posiçoes da linha
-    # caso contrario separa campos pelo ; e obtem dados atraves do indice
-    # depois remove espaços da direira e esquerda
+    # Caso cadastro do banco esteja configurado no campo 'cc_txt' igual True, converte os dados atraves da função
+    # separando os campos por ; e obtem dados atraves do indice configurado no banco,
+    # depois remove caracteres indesejados e espaços da direira e esquerda
     if dados_banco.get('cc_txt'):
-        data = dados_linha[dados_banco.get('pst_data')[0] - 1: dados_banco.get('pst_data')[1] - 1].strip()
-    """
-    else:
-        dados = dados_linha.split(';')
-        data = dados[dados_banco.get('pst_data') - 1].strip()"""
+        dados_linha = converte_dados_lista(dados_linha)
+        try:
+            data = dados_linha[dados_banco.get('pst_data') - 1]
+        except IndexError:
+            # preenchido com data invalida p/ falhar na validação da data
+            data = '-----------'
     return data
 
 
 def converte_dados_lista(dados_linha):
     dados_linha = dados_linha.strip()
-    dados_linha = dados_linha.replace(' ', ';')
-    dados_linha = dados_linha.split(';')
+    dados_linha = dados_linha.split(' ')
+    if '' in dados_linha:
+        dados_linha = exclui_itens_vazio_lista(dados_linha)
+    return dados_linha
+
+
+def exclui_itens_vazio_lista(dados_linha):
+    while '' in dados_linha:
+        dados_linha.remove('')
     return dados_linha
 
 
 def obter_saldo_cc(dados_linha, dados_banco):
-    # Caso caso arquivo tipo txt(cc_txt) do banco igual True, converte os dados atraves da função seprando
-    # os campos por ; e obtem dados atraves do indice configurado no banco sendo do final para o inicio,
+    # Caso cadastro do banco esteja configurado no campo 'cc_txt' igual True, converte os dados atraves da função
+    # separando os campos por ; e obtem dados atraves do indice configurado no banco,
     # depois remove caracteres indesejados e espaços da direira e esquerda
     if dados_banco.get('cc_txt'):
         dados = converte_dados_lista(dados_linha)
-        # print(f'Linha Saldo Conta Corrente obtida após conversão: {dados}')
-        saldo_cc = dados[len(dados) - dados_banco.get('pst_saldo_cc')]
-        # print(f'Saldo Conta Corrente: {saldo_cc}')
+        saldo_cc = dados[dados_banco.get('pst_saldo_cc')]
     saldo_cc = tratar_valor(saldo_cc)
     return saldo_cc
 
@@ -108,22 +113,19 @@ def apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca):
     qt_linhas = len(dados_arquivo)
     palavra = texto_busca
     linha = dados_banco.get('pst_linha_saldo_apl')
-    qt_maxima = dados_banco.get('qt_linhas_busca_saldo_apl')
     dados = dados_arquivo[qt_linhas - linha]
     # Caso a palavra configurada no indice(texto_pst_vr_apl) do banco não exista nos dados da linha,
-    # Sistema entra no laço while e percorre "qt_linhas_busca_saldo_apl" linhas configuradas no banco
-    # para tentar encontrar a palavra nas linhas acima ao ponto inicial, "pst_linha_saldo_apl", configurado no banco.
+    # Sistema entra no laço while e percorre linhas até o limite de linhas do arquivo ou até encontrar
+    # a palavra nas linhas acima ao ponto inicial, "pst_linha_saldo_apl", configurado no banco.
     i = 0
-    while palavra not in dados and i in range(qt_maxima) and (qt_linhas - linha - i) >= 0:
+    while palavra not in dados and (qt_linhas - linha - i) >= 0:
         dados = dados_arquivo[qt_linhas - linha - i]
         i += 1
 
     # Confirma se a palavra configurada no indice(texto_pst_vr_apl) do banco existe nos dados da linha
     if palavra in dados:
         dados = converte_dados_lista(dados)
-        # print(f'Linha aplicação obtida após conversão: {dados}')
         saldo_apl = dados[len(dados) - dados_banco.get('pst_saldo_apl')]
-        # print(f'Saldo aplicação: {saldo_apl}')
         return saldo_apl
     # Caso não obtenha o saldo_apl retorna o valor None
     else:
@@ -156,12 +158,10 @@ def busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo):
         i = 0
         while palavra not in dados and i in range(qt_maxima) and (linha - 1 + i) < qt_linhas:
             dados = cabecalho[linha - 1 + i]
-            # print(f'dados while{i}: {dados}')
             i += 1
 
         if palavra in dados:
             conta = texto_busca
-            # print(f'Conta obtida: {conta}')
             return conta
         # Caso não obtenha a conta retorna o valor Nao Identificada
         else:
@@ -173,8 +173,6 @@ def verifica_conta_cc(bancos, cabecalho, tipo):
     for chave, dados_banco in bancos.items():
         for conta_teste in dados_banco.get('contas'):
             texto_busca = conta_teste
-            # print(f'Conta Teste: {conta_teste}')
-            # print(f'Chave banco: {chave}')
             conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
 
             # Como não está padronizado a exibição das contas nos extratos de conta corrente e aplicação
@@ -243,7 +241,6 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
             except ValueError:
                 data_linha = '0'
             data_linha = data_linha + complemento_data
-            # print(f'data completa banrisul: {data_linha}')
 
         # Caso seja banco banrisul procura data inferior a data do sistema para pegar o saldo CC
         # Se linha de busca ultrapassar dados MOVIMENTOS DA CONTA CORRENTE buscará saldo pelo caso abaixo
@@ -260,7 +257,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
                 data_linha = datetime.strptime(data_linha, str_data_forma).date()
                 if data_linha.toordinal() < data_hoje.toordinal():
                     # obtendo saldos cc
-                    saldo_cc = tratar_valor(dados[len(dados) - 1])
+                    saldo_cc = tratar_valor(dados[dados_banco.get('pst_saldo_cc')])
                     # interrompendo busca while
                     break
         # Validando se string recebida é uma data, caso seja data será convertida em tipo date
