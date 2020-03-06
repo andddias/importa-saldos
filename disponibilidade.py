@@ -42,7 +42,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 19,
                   'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1,
-                  'contas': {'29383-0': {'apl': {'apl1': 'Total'}},
+                  'contas': {'29383-0': {'apl': None},
                              '29384-9': {'apl': {'apl1': 'Total'}}
                              }
                   },
@@ -198,30 +198,31 @@ for arquivo_txt in lista_de_arquivos:
                 dados_banco = tupla_dados[1]
                 conta = tupla_dados[2]
 
-                # lista temporaria p/ receber linhas do arquivo lido
-                dados_arquivo = []
+                if dados_banco.get('contas').get(conta).get('apl') is not None:
+                    # lista temporaria p/ receber linhas do arquivo lido
+                    dados_arquivo = []
 
-                # colocando cursor no inicio do arquivo
-                arquivo.seek(0)
-                dados_arquivo = arquivo.readlines()
+                    # colocando cursor no inicio do arquivo
+                    arquivo.seek(0)
+                    dados_arquivo = arquivo.readlines()
 
-                # Recebendo os dados apartir da função
-                texto_apl = dados_banco.get('contas')[conta]['apl']
-                saldo_apl = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
+                    # Recebendo os dados apartir da função
+                    texto_apl = dados_banco.get('contas')[conta]['apl']
+                    saldo_apl = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
 
-                # Verificando saldos apls já guardados
-                if saldo_apl[0] is None and saldo_apl[1] is not None:
-                    biblioteca_saldos[conta]['apl2'] = saldo_apl[1]
-                    # Guardando Saldo APL na variavel que irá renomear arquivo
-                    saldo_apl_rename = saldo_apl[1]
+                    # Verificando saldos apls já guardados
+                    if saldo_apl[0] is None and saldo_apl[1] is not None:
+                        biblioteca_saldos[conta]['apl2'] = saldo_apl[1]
+                        # Guardando Saldo APL na variavel que irá renomear arquivo
+                        saldo_apl_rename = saldo_apl[1]
 
-                if saldo_apl[0] is not None:
-                    biblioteca_saldos[conta]['apl1'] = saldo_apl[0]
-                    # Guardando Saldo APL na variavel que irá renomear arquivo
-                    saldo_apl_rename = saldo_apl[0]
+                    if saldo_apl[0] is not None:
+                        biblioteca_saldos[conta]['apl1'] = saldo_apl[0]
+                        # Guardando Saldo APL na variavel que irá renomear arquivo
+                        saldo_apl_rename = saldo_apl[0]
 
-                # Guardando nome do arquivo para depois move-lo para pasta de item processados
-                arquivo_processado = arquivo_txt
+                    # Guardando nome do arquivo para depois move-lo para pasta de item processados
+                    arquivo_processado = arquivo_txt
 
         if arquivo_processado is not None:
             # Preparando dados para renomear arquivos processados

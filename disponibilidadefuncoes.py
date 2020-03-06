@@ -291,7 +291,9 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
         else:
             saldo_apl = '0', '0'
     else:
-        if len(dados_banco.get('contas').get(conta).get('apl')) == 1:
+        if dados_banco.get('contas').get(conta).get('apl') is None:
+            saldo_apl = '0', '0'
+        elif len(dados_banco.get('contas').get(conta).get('apl')) == 1:
             saldo_apl = None, '0'
         elif len(dados_banco.get('contas').get(conta).get('apl')) == 2:
             saldo_apl = None, None
