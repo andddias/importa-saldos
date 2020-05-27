@@ -22,7 +22,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '52500-6': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
                              '52600-2': {'apl': {'apl1': 'DIFERENCIA'}},
                              '52901-X': {'apl': None},
-                             '52903-6': {'apl': None},
+                             '52903-6': {'apl': {'apl1': 'DIFERENCIA'}},
                              '52904-4': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
                              '152600-6': {'apl': None},
                              '152700-2': {'apl': None},
@@ -34,7 +34,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
                   'pst_linha_cc_apl': 7,
                   'pst_linha_saldo_apl': 100, 'pst_saldo_apl': 2,
-                  'contas': {'1416-0': {'apl': {'apl1': 'REFDI'}},
+                  'contas': {'1416-0': {'apl': {'apl1': 'MEGA'}},
                              '1417-9': {'apl': {'apl1': 'PREMIUM'}}
                              }
                   },
@@ -59,8 +59,15 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
                   'contas': {'06.851005.0-6': {'apl': {'apl1': 'ATUAL......'}}
                              }
-                  }
+                  },
+          '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
+                  'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_saldo_apl': 30, 'pst_saldo_apl': 1,
+                  'contas': {'586188': {'apl': {'apl1': 'tico:'}}
+                             }
+                  },
           }
+
 
 # Dicionario que receberá todos os dados de contas saldos e data
 biblioteca_saldos = {}
