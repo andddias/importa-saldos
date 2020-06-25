@@ -41,6 +41,10 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
           '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 19,
+                  
+                  
+                  
+                  
                   'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1,
                   'contas': {'29383-0': {'apl': {'apl1': 'Total'}},
                              '29384-9': {'apl': {'apl1': 'Total'}}
@@ -61,9 +65,10 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              }
                   },
           '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
-                  'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
-                  'pst_linha_saldo_apl': 30, 'pst_saldo_apl': 1,
-                  'contas': {'586188': {'apl': {'apl1': 'tico:'}}
+                  'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_cc_apl': 9,
+                  'pst_linha_saldo_apl': 22, 'pst_saldo_apl': 1,
+                  'contas': {'58618-8': {'apl': {'apl1': 'Total'}}
                              }
                   },
           }
@@ -109,37 +114,52 @@ except FileNotFoundError:
 for arquivo_txt in lista_de_arquivos:
 
     arquivo_processado = None
+    arquivo_erro = None
 
     if os.path.isfile(src + arquivo_txt) and arquivo_txt.split('.')[1].lower() in ['txt', 'csv']:
         with open(src + arquivo_txt) as arquivo:
             cabecalho = []
             for contador in range(0, cabecalho_linhas):
-                ln_arquivo = arquivo.readline()
-                cabecalho.append(ln_arquivo)
+                try:
+                    ln_arquivo = arquivo.readline()
+                    cabecalho.append(ln_arquivo)
+                except UnicodeDecodeError:
+                    cabecalho = None
+                    arquivo_erro = arquivo_txt
+                    break
 
-            # Caso boolena verdadeiro recebe os parametros para iniciar função de obtenção saldos,
-            # caso falso na variavel dados_banco recebe lista de valores testados para impressão no
-            # caso de também falhar na pesquisa por contas de aplicação
-            tupla_dados = disponibilidadefuncoes.verifica_conta_cc(bancos, cabecalho, tipo='SALDO_CC')
-            if tupla_dados[0]:
-                dados_banco = tupla_dados[1]
-                conta = tupla_dados[2]
+            if cabecalho is not None:
+                # Caso boolena verdadeiro recebe os parametros para iniciar função de obtenção saldos,
+                # caso falso na variavel dados_banco recebe lista de valores testados para impressão no
+                # caso de também falhar na pesquisa por contas de aplicação
+                tupla_dados = disponibilidadefuncoes.verifica_conta_cc(bancos, cabecalho, tipo='SALDO_CC')
+                if tupla_dados[0]:
+                    dados_banco = tupla_dados[1]
+                    conta = tupla_dados[2]
 
-                # lista temporaria p/ receber linhas do arquivo lido
-                dados_arquivo = []
+                    # lista temporaria p/ receber linhas do arquivo lido
+                    dados_arquivo = []
 
-                # colocando cursor no inicio do arquivo
-                arquivo.seek(0)
-                dados_arquivo = arquivo.readlines()
+                    # colocando cursor no inicio do arquivo
+                    arquivo.seek(0)
+                    dados_arquivo = arquivo.readlines()
 
-                # Recebendo os dados apartir da função
-                saldos = disponibilidadefuncoes.saldos_conta(data_hoje, dados_arquivo, dados_banco, conta)
+                    # Recebendo os dados apartir da função
+                    saldos = disponibilidadefuncoes.saldos_conta(data_hoje, dados_arquivo, dados_banco, conta)
 
-                # Guardando as informações no biblioteca de saldos
-                biblioteca_saldos[conta] = saldos
+                    # Guardando as informações no biblioteca de saldos
+                    biblioteca_saldos[conta] = saldos
 
-                # Guardando nome do arquivo para depois move-lo para pasta de item processados
-                arquivo_processado = arquivo_txt
+                    # Guardando nome do arquivo para depois move-lo para pasta de item processados
+                    arquivo_processado = arquivo_txt
+
+        if arquivo_erro is not None:
+            # Renomeando arquivo com erro
+            try:
+                rename_arquivo = f'{arquivo_erro.split(".")[0]}.txt_erro'
+                os.rename(os.path.join(src, arquivo_erro), os.path.join(src, rename_arquivo))
+            except FileExistsError:
+                pass
 
         if arquivo_processado is not None:
             # Preparando dados para renomear arquivos processados

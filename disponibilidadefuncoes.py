@@ -182,7 +182,16 @@ def verifica_conta_cc(bancos, cabecalho, tipo):
                 texto_busca = conta_teste.replace('.', '-')
                 conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
                 if conta != 'Nao Identificada':
-                    conta = conta.replace('-', '.')
+                    conta = conta_teste
+
+            # Como não está padronizado a exibição das contas nos extratos de conta corrente e aplicação
+            # do banco SICREDI sistema substitui o TRAÇO por NADA e fará um novo teste atendendo as
+            # condicões do proximo if e depois retornará ao valor original da conta cadastrada
+            if conta == 'Nao Identificada' and chave == '748':
+                texto_busca = conta_teste.replace('-', '')
+                conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
+                if conta != 'Nao Identificada':
+                    conta = conta_teste
 
             if conta != 'Nao Identificada':
                 return True, dados_banco, conta,
