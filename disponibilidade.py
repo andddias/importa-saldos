@@ -8,7 +8,7 @@ import os
 str_data_forma = '%d/%m/%Y'
 
 # Data comparação
-# data_hoje = datetime.strptime('19/02/2020', str_data_forma).date()
+# data_hoje = datetime.strptime('09/09/2020', str_data_forma).date()
 data_hoje = datetime.today()
 print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
@@ -26,7 +26,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '52904-4': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
                              '152600-6': {'apl': None},
                              '152700-2': {'apl': None},
-                             '152800-9': {'apl': None},
+                             '152800-9': {'apl': {'apl1': 'DIFERENCIA'}},
                              '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
                              }
                   },
@@ -41,21 +41,17 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
           '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 19,
-                  
-                  
-                  
-                  
                   'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1,
                   'contas': {'29383-0': {'apl': {'apl1': 'Total'}},
                              '29384-9': {'apl': {'apl1': 'Total'}}
                              }
                   },
-          '033': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '033': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 11,
                   'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1,
-                  'contas': {'13.002957.5': {'apl': {'apl1': 'tico', 'apl2': 'Fundo'}},
-                             '13.002958.2': {'apl': {'apl1': 'tico', 'apl2': 'Fundo'}}
+                  'contas': {'13.002957.5': {'apl': {'apl1': 'ContaMax', 'apl2': 'Fundo'}},
+                             '13.002958.2': {'apl': {'apl1': 'ContaMax', 'apl2': 'Fundo'}}
                              }
                   },
           '041': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,

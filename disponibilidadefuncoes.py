@@ -183,6 +183,12 @@ def verifica_conta_cc(bancos, cabecalho, tipo):
                 conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
                 if conta != 'Nao Identificada':
                     conta = conta_teste
+            # segundo opção de teste caso seja banco santander
+            if conta == 'Nao Identificada' and chave == '033':
+                texto_busca = conta_teste.replace('.', '')
+                conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
+                if conta != 'Nao Identificada':
+                    conta = conta_teste
 
             # Como não está padronizado a exibição das contas nos extratos de conta corrente e aplicação
             # do banco SICREDI sistema substitui o TRAÇO por NADA e fará um novo teste atendendo as
