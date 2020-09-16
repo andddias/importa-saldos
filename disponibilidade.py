@@ -26,7 +26,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '52904-4': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
                              '152600-6': {'apl': None},
                              '152700-2': {'apl': None},
-                             '152800-9': {'apl': {'apl1': 'DIFERENCIA'}},
+                             '152800-9': {'apl': None},
                              '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
                              }
                   },
@@ -40,10 +40,10 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   },
           '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
-                  'pst_linha_cc_apl': 19,
-                  'pst_linha_saldo_apl': 10,  'pst_saldo_apl': 1,
-                  'contas': {'29383-0': {'apl': {'apl1': 'Total'}},
-                             '29384-9': {'apl': {'apl1': 'Total'}}
+                  'pst_linha_cc_apl': 9,
+                  'pst_linha_saldo_apl': 25,  'pst_saldo_apl': 1,
+                  'contas': {'29383-0': {'apl': {'apl1': 'CDB-FACIL'}},
+                             '29384-9': {'apl': {'apl1': 'CDB-FACIL', 'apl2': 'TARGET'}}
                              }
                   },
           '033': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,
@@ -234,12 +234,16 @@ for arquivo_txt in lista_de_arquivos:
                     saldo_apl = disponibilidadefuncoes.obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
 
                     # Verificando saldos apls já guardados
-                    if saldo_apl[0] is None and saldo_apl[1] is not None:
+                    if saldo_apl[0] is not None and saldo_apl[1] is not None:
+                        biblioteca_saldos[conta]['apl1'] = saldo_apl[0]
+                        biblioteca_saldos[conta]['apl2'] = saldo_apl[1]
+                        # Guardando Saldo APL na variavel que irá renomear arquivo
+                        saldo_apl_rename = saldo_apl[0]
+                    elif saldo_apl[0] is None and saldo_apl[1] is not None:
                         biblioteca_saldos[conta]['apl2'] = saldo_apl[1]
                         # Guardando Saldo APL na variavel que irá renomear arquivo
                         saldo_apl_rename = saldo_apl[1]
-
-                    if saldo_apl[0] is not None:
+                    elif saldo_apl[0] is not None:
                         biblioteca_saldos[conta]['apl1'] = saldo_apl[0]
                         # Guardando Saldo APL na variavel que irá renomear arquivo
                         saldo_apl_rename = saldo_apl[0]
