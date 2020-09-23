@@ -199,6 +199,13 @@ def verifica_conta_cc(bancos, cabecalho, tipo):
                 if conta != 'Nao Identificada':
                     conta = conta_teste
 
+            # segundo opção de teste caso seja banco Sicredi
+            if conta == 'Nao Identificada' and chave == '748':
+                texto_busca = 'Sicredi'
+                conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
+                if conta != 'Nao Identificada':
+                    conta = conta_teste
+
             if conta != 'Nao Identificada':
                 return True, dados_banco, conta,
     return False,
