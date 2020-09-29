@@ -63,8 +63,8 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
           '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 3,
-                  'pst_linha_saldo_apl': 10, 'pst_saldo_apl': 1,
-                  'contas': {'58618-8': {'apl': {'apl1': 'Bruto:'}}
+                  'pst_linha_saldo_apl': 20, 'pst_saldo_apl': 2,
+                  'contas': {'58618-8': {'apl': {'apl1': '(100,00%)'}}
                              }
                   },
           }
