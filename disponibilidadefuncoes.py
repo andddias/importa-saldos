@@ -206,6 +206,13 @@ def verifica_conta_cc(bancos, cabecalho, tipo):
                 if conta != 'Nao Identificada':
                     conta = conta_teste
 
+            # Busca APL CEF quando não existe informações da conta no arquivo buscará pelo nome da APL
+            if conta == 'Nao Identificada' and chave == '104':
+                texto_busca = dados_banco.get('contas')[conta_teste]['apl']['apl1']
+                conta = busca_linha_conta(cabecalho, dados_banco, texto_busca, tipo)
+                if conta != 'Nao Identificada':
+                    conta = conta_teste
+
             if conta != 'Nao Identificada':
                 return True, dados_banco, conta,
     return False,

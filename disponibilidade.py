@@ -13,7 +13,7 @@ data_hoje = datetime.today()
 print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
 # Quantidade maxima de linhas a ler para o cabecalho, maior atual APL Bradesco
-cabecalho_linhas = 19
+cabecalho_linhas = 55
 # Bancos posições e contas
 bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
@@ -32,10 +32,10 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   },
           '104': {'pst_linha_cc': 15, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
-                  'pst_linha_cc_apl': 7,
-                  'pst_linha_saldo_apl': 100, 'pst_saldo_apl': 2,
+                  'pst_linha_cc_apl': 50,
+                  'pst_linha_saldo_apl': 50, 'pst_saldo_apl': 2,
                   'contas': {'1416-0': {'apl': {'apl1': 'MEGA'}},
-                             '1417-9': {'apl': {'apl1': 'PREMIUM'}}
+                             '1417-9': {'apl': {'apl1': 'RUBI'}}
                              }
                   },
           '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
