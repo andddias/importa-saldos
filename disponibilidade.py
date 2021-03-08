@@ -30,10 +30,10 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
                              }
                   },
-          '104': {'pst_linha_cc': 15, 'pst_data': 1, 'pst_saldo_cc': -2,
+          '104': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
-                  'pst_linha_cc_apl': 50,
-                  'pst_linha_saldo_apl': 50, 'pst_saldo_apl': 2,
+                  'pst_linha_cc_apl': 47,
+                  'pst_linha_saldo_apl': 47, 'pst_saldo_apl': 2,
                   'contas': {'1416-0': {'apl': {'apl1': 'MEGA'}},
                              '1417-9': {'apl': {'apl1': 'RUBI'}}
                              }
