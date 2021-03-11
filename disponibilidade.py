@@ -24,7 +24,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '52901-X': {'apl': None},
                              '52903-6': {'apl': {'apl1': 'DIFERENCIA'}},
                              '52904-4': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
-                             '152600-6': {'apl': None},
+                             '152600-6': {'apl': {'apl1': 'DIFERENCIA'}},
                              '152700-2': {'apl': None},
                              '152800-9': {'apl': None},
                              '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
