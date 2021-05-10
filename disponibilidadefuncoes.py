@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from decimal import Decimal
 
 str_data_forma = '%d/%m/%Y'
@@ -289,6 +289,26 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
                     saldo_cc = tratar_valor(dados[dados_banco.get('pst_saldo_cc')])
                     # interrompendo busca while
                     break
+
+        # Caso seja banco Santander procura Saldo Disponível em Conta Corrente para pegar o saldo CC
+        # Se linha de busca ultrapassar dados Não há lançamentos desta conta corrente para o período solicitado.
+        # buscará saldo pelo caso abaixo
+        if list(dados_banco.get('contas'))[0] == '13.002957.5' and (
+                'amentos desta conta corrente para o per' in dados_arquivo[idx]):
+            i = 0
+            while 'vel em Conta Corrente' not in dados_arquivo[idx + i] and idx + i < len(dados_arquivo):
+                i += 1
+            dados = converte_dados_lista(dados_arquivo[idx + i])
+
+            # Obtendo data de forma personalizada para condição e banco em especifico utilizando
+            # a data de hoje -1 dia, pois nesse caso quando não há movimentacao não existe um data a buscar
+            data_linha = data_hoje - timedelta(days=1)
+            if data_linha.toordinal() < data_hoje.toordinal():
+                # obtendo saldos cc
+                saldo_cc = tratar_valor(dados[dados_banco.get('pst_saldo_cc')])
+                # interrompendo busca while
+                break
+
         # Validando se string recebida é uma data, caso seja data será convertida em tipo date
         elif valida_data(data_linha):
             data_linha = datetime.strptime(data_linha, str_data_forma).date()

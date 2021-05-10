@@ -43,21 +43,27 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'pst_linha_cc_apl': 9,
                   'pst_linha_saldo_apl': 25,  'pst_saldo_apl': 1,
                   'contas': {'29383-0': {'apl': {'apl1': 'CDB-FACIL'}},
-                             '29384-9': {'apl': {'apl1': 'CDB-FACIL', 'apl2': 'TARGET'}}
+                             '29384-9': {'apl': {'apl1': 'CDB-FACIL'}}
                              }
                   },
           '033': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 11,
                   'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1,
-                  'contas': {'13.002957.5': {'apl': {'apl1': 'ContaMax', 'apl2': 'q.dispon'}},
-                             '13.002958.2': {'apl': {'apl1': 'ContaMax', 'apl2': 'q.dispon'}}
+                  'contas': {'13.002957.5': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}},
+                             '13.002958.2': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}}
                              }
                   },
           '041': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
                   'contas': {'06.851005.0-6': {'apl': {'apl1': 'ATUAL......'}}
+                             }
+                  },
+          '422': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
+                  'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
+                  'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
+                  'contas': {'23066-3': {'apl': {'apl1': 'Total investido'}}
                              }
                   },
           '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
