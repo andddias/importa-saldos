@@ -231,6 +231,19 @@ def mes_ano_banrisul(dados_arquivo):
     return '/00/0000'
 
 
+def ano_safra(dados_arquivo):
+    idx = len(dados_arquivo) - 55
+    while idx >= 0:
+        dados_linha = dados_arquivo[idx]
+        # O texto 'odo de' é o localizador da linha onde é possivel identificar a data completa
+        if 'odo de' in dados_linha:
+            complemento_data = dados_linha[29:34]
+            return complemento_data
+        idx -= 1
+    # Caso não encontre retorna um valor invalido para falhar na validação da data
+    return '/0000'
+
+
 def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
     # Variavel para guardar dia anterior p/ comparação dia extrato banco Banrisul
     dia_anterior = None
@@ -239,6 +252,11 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
     # Caso seja banco Banrisul, busca mes e ano a partir da função
     if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
         complemento_data = mes_ano_banrisul(dados_arquivo)
+
+    # Caso seja banco Banrisul, busca mes e ano a partir da função
+    if list(dados_banco.get('contas'))[0] == '23066-3':
+        complemento_data = ano_safra(dados_arquivo)
+
     while idx >= 0:
         # Obtendo dados da linha
         dados_linha = dados_arquivo[idx]
@@ -269,6 +287,15 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
                 data_linha = (str(data_linha)).zfill(2)
             except ValueError:
                 data_linha = '0'
+            data_linha = data_linha + complemento_data
+
+        if list(dados_banco.get('contas'))[0] == '23066-3':
+            try:
+                # Tentando converter em inteiro para testar dia no formato valido
+                int(data_linha[0:2])
+                int(data_linha[3:5])
+            except ValueError:
+                data_linha = '0/00'
             data_linha = data_linha + complemento_data
 
         # Caso seja banco banrisul procura data inferior a data do sistema para pegar o saldo CC

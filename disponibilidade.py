@@ -8,7 +8,7 @@ import os
 str_data_forma = '%d/%m/%Y'
 
 # Data comparação
-# data_hoje = datetime.strptime('09/09/2020', str_data_forma).date()
+# data_hoje = datetime.strptime('20/09/2021', str_data_forma).date()
 data_hoje = datetime.today()
 print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strftime(str_data_forma)}')
 
@@ -60,10 +60,11 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'contas': {'06.851005.0-6': {'apl': {'apl1': 'ATUAL......'}}
                              }
                   },
-          '422': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '422': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
-                  'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
-                  'contas': {'23066-3': {'apl': {'apl1': 'Total investido'}}
+                  'pst_linha_cc_apl': 5,
+                  'pst_linha_saldo_apl': 45, 'pst_saldo_apl': 2,
+                  'contas': {'23066-3': {'apl': {'apl1': '50,68', 'apl2': '49,32'}}
                              }
                   },
           '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
