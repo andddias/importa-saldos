@@ -106,6 +106,8 @@ def tratar_valor(valor):
     valor = valor.replace('.', '')
     valor = valor.replace('-', '')
     valor = valor.strip()
+    if valor == '':
+        valor = None
     return valor
 
 
@@ -253,7 +255,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
     if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
         complemento_data = mes_ano_banrisul(dados_arquivo)
 
-    # Caso seja banco Banrisul, busca mes e ano a partir da função
+    # Caso seja banco Safra, busca ano a partir da função
     if list(dados_banco.get('contas'))[0] == '23066-3':
         complemento_data = ano_safra(dados_arquivo)
 

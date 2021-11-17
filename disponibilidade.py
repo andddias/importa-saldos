@@ -19,15 +19,15 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_saldo_apl': 8, 'pst_saldo_apl': 1,
                   'contas': {'21397-7': {'apl': None},
-                             '52500-6': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
-                             '52600-2': {'apl': {'apl1': 'DIFERENCIA'}},
+                             '52500-6': {'apl': {'apl1': 'Diferenciad'}},
+                             '52600-2': {'apl': {'apl1': 'Diferenciad'}},
                              '52901-X': {'apl': None},
-                             '52903-6': {'apl': {'apl1': 'DIFERENCIA'}},
-                             '52904-4': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}},
-                             '152600-6': {'apl': {'apl1': 'DIFERENCIA'}},
+                             '52903-6': {'apl': {'apl1': 'Diferenciad'}},
+                             '52904-4': {'apl': {'apl1': 'Diferenciad', 'apl2': 'Prefixado'}},
+                             '152600-6': {'apl': {'apl1': 'Diferenciad'}},
                              '152700-2': {'apl': None},
                              '152800-9': {'apl': None},
-                             '152900-5': {'apl': {'apl1': 'DIFERENCIA', 'apl2': 'Prefixado'}}
+                             '152900-5': {'apl': {'apl1': 'Diferenciad', 'apl2': 'Prefixado'}}
                              }
                   },
           '104': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -2,
@@ -64,7 +64,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 5,
                   'pst_linha_saldo_apl': 45, 'pst_saldo_apl': 2,
-                  'contas': {'23066-3': {'apl': {'apl1': '50,68', 'apl2': '49,32'}}
+                  'contas': {'23066-3': {'apl': {'apl1': '44,86', 'apl2': '55,14'}}
                              }
                   },
           '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
