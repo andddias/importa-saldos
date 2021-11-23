@@ -14,64 +14,75 @@ print(f'Serão obtidos saldos com data menor que a data atual: {data_hoje.strfti
 
 # Quantidade maxima de linhas a ler para o cabecalho, maior atual APL Bradesco
 cabecalho_linhas = 55
+
+nome_bancos = {'001': 'B. Brasil', '104': 'B. CEF', '237': 'B. Bradesco', '033': 'B. Santander',
+               '041': 'B. Banrisul', '422': 'B. Sicredi', '748': 'B. Safra', }
+
+tipos_apls = {'Diferenciad': 'FUNDO INVESTIMENTO', 'Prefixado': 'FUNDO INVESTIMENTO', 'MEGA': 'FUNDO INVESTIMENTO',
+              'RUBI': 'FUNDO INVESTIMENTO', 'CDB-FACIL': 'CDB', 'Resgate Autom': 'CDB',
+              'q.dispon': 'FUNDO INVESTIMENTO', '(100,00%)': 'CDB', 'MODER': 'FUNDO INVESTIMENTO',
+              'SPECI': 'FUNDO INVESTIMENTO', 'EXECUTIVE': 'FUNDO INVESTIMENTO'}
+
 # Bancos posições e contas
 bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_saldo_apl': 8, 'pst_saldo_apl': 1,
-                  'contas': {'21397-7': {'apl': None},
-                             '52500-6': {'apl': {'apl1': 'Diferenciad'}},
-                             '52600-2': {'apl': {'apl1': 'Diferenciad'}},
-                             '52901-X': {'apl': None},
-                             '52903-6': {'apl': {'apl1': 'Diferenciad'}},
-                             '52904-4': {'apl': {'apl1': 'Diferenciad', 'apl2': 'Prefixado'}},
-                             '152600-6': {'apl': {'apl1': 'Diferenciad'}},
-                             '152700-2': {'apl': None},
-                             '152800-9': {'apl': None},
-                             '152900-5': {'apl': {'apl1': 'Diferenciad', 'apl2': 'Prefixado'}}
+                  'contas': {'21397-7': {'apl': None, 'prefixo': 'OAB'},
+                             '52500-6': {'apl': {'apl1': 'Diferenciad'}, 'prefixo': 'OAB'},
+                             '52600-2': {'apl': {'apl1': 'Diferenciad'}, 'prefixo': 'OAB'},
+                             '52901-X': {'apl': None, 'prefixo': 'OAB'},
+                             '52903-6': {'apl': {'apl1': 'Diferenciad'}, 'prefixo': 'OAB'},
+                             '52904-4': {'apl': {'apl1': 'Diferenciad', 'apl2': 'Prefixado'}, 'prefixo': 'FIDA'},
+                             '152600-6': {'apl': {'apl1': 'Diferenciad'}, 'prefixo': 'OAB'},
+                             '152700-2': {'apl': None, 'prefixo': 'OAB'},
+                             '152800-9': {'apl': None, 'prefixo': 'OAB'},
+                             '152900-5': {'apl': {'apl1': 'Diferenciad', 'apl2': 'Prefixado'},
+                                          'prefixo': 'EXAME DE ORDEM'}
                              }
                   },
           '104': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -2,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
                   'pst_linha_cc_apl': 47,
                   'pst_linha_saldo_apl': 47, 'pst_saldo_apl': 2,
-                  'contas': {'1416-0': {'apl': {'apl1': 'MEGA'}},
-                             '1417-9': {'apl': {'apl1': 'RUBI'}}
+                  'contas': {'1416-0': {'apl': {'apl1': 'MEGA'}, 'prefixo': 'OAB'},
+                             '1417-9': {'apl': {'apl1': 'RUBI'}, 'prefixo': 'FIDA'}
                              }
                   },
           '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 9,
                   'pst_linha_saldo_apl': 25,  'pst_saldo_apl': 1,
-                  'contas': {'29383-0': {'apl': {'apl1': 'CDB-FACIL'}},
-                             '29384-9': {'apl': {'apl1': 'CDB-FACIL'}}
+                  'contas': {'29383-0': {'apl': {'apl1': 'CDB-FACIL'}, 'prefixo': 'OAB'},
+                             '29384-9': {'apl': {'apl1': 'CDB-FACIL'}, 'prefixo': 'FIDA'}
                              }
                   },
           '033': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 11,
                   'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1,
-                  'contas': {'13.002957.5': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}},
-                             '13.002958.2': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}}
+                  'contas': {'13.002957.5': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}, 'prefixo': 'OAB'},
+                             '13.002958.2': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}, 'prefixo': 'FIDA'}
                              }
                   },
           '041': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
-                  'contas': {'06.851005.0-6': {'apl': {'apl1': 'ATUAL......'}}
+                  'contas': {'06.851005.0-6': {'apl': None, 'prefixo': 'OAB'}
                              }
                   },
           '422': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 5,
                   'pst_linha_saldo_apl': 45, 'pst_saldo_apl': 2,
-                  'contas': {'23066-3': {'apl': {'apl1': '44,86', 'apl2': '55,14'}}
+                  'contas': {'23066-3': {'apl': {'apl1': 'MODER', 'apl2': 'SPECI',
+                                                 }, 'prefixo': 'FIDA'}
                              }
                   },
           '748': {'pst_linha_cc': 5, 'pst_data': 1, 'pst_saldo_cc': -1,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 3,
                   'pst_linha_saldo_apl': 20, 'pst_saldo_apl': 2,
-                  'contas': {'58618-8': {'apl': {'apl1': '(100,00%)'}}
+                  'contas': {'58618-8': {'apl': {'apl1': '(100,00%)'}, 'prefixo': 'OAB'}
                              }
                   },
           }
@@ -94,9 +105,10 @@ dst = cwd + '\\import\\processado\\'
 lista_de_arquivos = os.listdir(src)
 
 # Prenchendo os dados de todas as contas com None
-for dados_banco in bancos.values():
+for chave, dados_banco in bancos.items():
     for conta in dados_banco['contas']:
-        saldos = {'data': None, 'saldo_cc': None, 'apl1': None, 'apl2': None}
+        prefixo = dados_banco.get('contas').get(conta).get('prefixo')
+        saldos = {'cod_banco': chave, 'prefixo': prefixo, 'data': None, 'saldo_cc': None, 'apl1': None, 'apl2': None}
         biblioteca_saldos[conta] = saldos
 
 # Removendo arquivo anterior de disponibilidade_dia_anterior.csv
@@ -151,7 +163,10 @@ for arquivo_txt in lista_de_arquivos:
                     saldos = disponibilidadefuncoes.saldos_conta(data_hoje, dados_arquivo, dados_banco, conta)
 
                     # Guardando as informações no biblioteca de saldos
-                    biblioteca_saldos[conta] = saldos
+                    biblioteca_saldos[conta]['data'] = saldos.get('data')
+                    biblioteca_saldos[conta]['saldo_cc'] = saldos.get('saldo_cc')
+                    biblioteca_saldos[conta]['apl1'] = saldos.get('apl1')
+                    biblioteca_saldos[conta]['apl2'] = saldos.get('apl2')
 
                     # Guardando nome do arquivo para depois move-lo para pasta de item processados
                     arquivo_processado = arquivo_txt
@@ -332,3 +347,52 @@ with open(arquivo, 'w', newline='') as arquivo_csv:
     total_geral_apl2 = str(sum(total_apl2)).replace('.', ',')
     total_geral = str(sum(total_cc) + sum(total_apl1) + sum(total_apl2)).replace('.', ',')
     escritor.writerow(('TOTAL GERAL', None, total_geral_cc, total_geral_apl1, total_geral_apl2, total_geral))
+
+arquivoBi = 'disponibilidade-bi.csv'
+with open(arquivoBi, 'w', newline='') as arquivo_csv:
+    escritor = csv.writer(arquivo_csv, delimiter=';')
+    escritor.writerow(('PREFIXO', 'BANCO', 'CONTA', 'TIPO', 'SALDO'))
+    total = []
+
+    for chave in biblioteca_saldos:
+        conta = chave
+        data = biblioteca_saldos[chave].get('data')
+        prefixo = biblioteca_saldos[chave].get('prefixo')
+        nome_banco = nome_bancos.get(biblioteca_saldos[chave].get('cod_banco'))
+
+        saldo_cc = biblioteca_saldos[chave].get('saldo_cc')
+        # verifica se há valor para validar se foi importado ou não
+        if saldo_cc is not None:
+            # Convertendo valores para calcular o total
+            cc = Decimal(saldo_cc.replace(',', '.'))
+            total.append(cc)
+        else:
+            saldo_cc = 'NÃO IMPORTADO'
+            cc = 0
+            total.append(cc)
+        escritor.writerow((prefixo, nome_banco, conta, 'C/C', saldo_cc))
+
+        saldo_apl1 = biblioteca_saldos[chave].get('apl1')
+        # verifica se há valor para validar se foi importado ou não
+        if saldo_apl1 is not None:
+            apl1 = Decimal(saldo_apl1.replace(',', '.'))
+            total.append(apl1)
+        else:
+            saldo_apl1 = 'NÃO IMPORTADO'
+            apl1 = 0
+            total.append(apl1)
+        escritor.writerow((prefixo, nome_banco, conta, 'APL', saldo_apl1))
+
+        saldo_apl2 = biblioteca_saldos[chave].get('apl2')
+        # verifica se há valor para validar se foi importado ou não
+        if saldo_apl2 is not None:
+            apl2 = Decimal(saldo_apl2.replace(',', '.'))
+            total.append(apl2)
+        else:
+            saldo_apl2 = 'NÃO IMPORTADO'
+            apl2 = 0
+            total.append(apl2)
+
+        escritor.writerow((prefixo, nome_banco, conta, 'APL', saldo_apl2))
+    total_geral = str(sum(total)).replace('.', ',')
+    escritor.writerow(('TOTAL GERAL', None, None, None, total_geral))
