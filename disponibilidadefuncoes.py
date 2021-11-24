@@ -80,24 +80,31 @@ def obter_saldo_cc(dados_linha, dados_banco):
     return saldo_cc
 
 
+def montar_nome_arquivo(apl_list):
+    saldo_apl_rename = ''
+    i = len(apl_list)
+    for saldo_apl in apl_list.values():
+        saldo_apl_rename += saldo_apl
+        if i > 1:
+            saldo_apl_rename += '-'
+        i -= 1
+    return saldo_apl_rename.replace(',', '_')
+
+
+def obter_saldo_lista_apl(dados_arquivo, dados_banco, apl_list):
+    if apl_list is not None:
+        for nome_apl, saldo_apl in apl_list.items():
+            if saldo_apl is None:
+                apl_list[nome_apl] = obter_saldo_apl(dados_arquivo, dados_banco, nome_apl)
+    return apl_list
+
+
 def obter_saldo_apl(dados_arquivo, dados_banco, texto_apl):
-    if len(texto_apl) == 1:
-        texto_busca1 = texto_apl.get('apl1')
-        saldo_apl1 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca1)
-        if saldo_apl1 is not None:
-            saldo_apl1 = tratar_valor(saldo_apl1)
-        # retorna na segunda posição o valor '0', pois deve retornar dois numeros já que o máximo de apls é 2
-        return [saldo_apl1, '0']
-    elif len(texto_apl) == 2:
-        texto_busca1 = texto_apl.get('apl1')
-        texto_busca2 = texto_apl.get('apl2')
-        saldo_apl1 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca1)
-        saldo_apl2 = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_busca2)
-        if saldo_apl1 is not None:
-            saldo_apl1 = tratar_valor(saldo_apl1)
-        if saldo_apl2 is not None:
-            saldo_apl2 = tratar_valor(saldo_apl2)
-        return [saldo_apl1, saldo_apl2]
+    saldo_apl = apl_busca_linha_saldo(dados_arquivo, dados_banco, texto_apl)
+    if saldo_apl is not None:
+        saldo_apl = tratar_valor(saldo_apl)
+
+    return saldo_apl
 
 
 def tratar_valor(valor):
@@ -246,7 +253,7 @@ def ano_safra(dados_arquivo):
     return '/0000'
 
 
-def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
+def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
     # Variavel para guardar dia anterior p/ comparação dia extrato banco Banrisul
     dia_anterior = None
 
@@ -363,18 +370,8 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
     # Testa se dados do banco informa que arquivo tambem tem dados de aplicação
     # Caso positivo obtem saldos de aplicação
     if dados_banco.get('apl_incluso'):
-        if dados_banco.get('contas').get(conta).get('apl') is not None:
-            texto_apl = dados_banco.get('contas').get(conta).get('apl')
-            saldo_apl = obter_saldo_apl(dados_arquivo, dados_banco, texto_apl)
-        else:
-            saldo_apl = '0', '0'
-    else:
-        if dados_banco.get('contas').get(conta).get('apl') is None:
-            saldo_apl = '0', '0'
-        elif len(dados_banco.get('contas').get(conta).get('apl')) == 1:
-            saldo_apl = None, '0'
-        elif len(dados_banco.get('contas').get(conta).get('apl')) == 2:
-            saldo_apl = None, None
+        if apl_list is not None:
+            apl_list = obter_saldo_lista_apl(dados_arquivo, dados_banco, apl_list)
 
     try:
         # Convertendo data p/ str
@@ -387,7 +384,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta):
         saldo_cc = None
 
     # Guardando as informações no biblioteca de saldos
-    saldos = {'data': data_linha, 'saldo_cc': saldo_cc, 'apl1': saldo_apl[0], 'apl2': saldo_apl[1]}
+    saldos = {'data': data_linha, 'saldo_cc': saldo_cc, 'apl': apl_list}
 
     return saldos
 
