@@ -398,3 +398,11 @@ def soma_saldos_apl(saldos):
     saldo_apl = sum(valores)
     saldo_apl = str(saldo_apl).replace('.', ',')
     return saldo_apl
+
+
+def convert_ansi(file):
+    try:
+        s = open(file).read()
+    except UnicodeDecodeError:
+        s = open(file, mode='r', encoding='utf-8-sig').read()
+        open(file, mode='w', encoding='ansi').write(s)

@@ -140,6 +140,10 @@ for arquivo_txt in lista_de_arquivos:
     arquivo_erro = None
 
     if os.path.isfile(src + arquivo_txt) and arquivo_txt.split('.')[1].lower() in ['txt', 'csv']:
+
+        # Verifica se é ANSI e não faz nada, se for do tipo UTF-8-BOM converte para ANSI
+        disponibilidadefuncoes.convert_ansi(src + arquivo_txt)
+
         with open(src + arquivo_txt) as arquivo:
             cabecalho = []
             for contador in range(0, cabecalho_linhas):
