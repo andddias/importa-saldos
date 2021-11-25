@@ -24,7 +24,7 @@ tipos_apls = {'Diferenciad': 'RENDA FIXA', 'Prefixado': 'RENDA FIXA', 'MEGA': 'R
               'SPECI': 'RENDA FIXA', 'EXECUTIVE': 'RENDA FIXA'}
 
 # Bancos posições e contas
-bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
+bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,'extrato_invertido': False,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_saldo_apl': 8, 'pst_saldo_apl': 1,
                   'contas': {'21397-7': {'apl': None, 'prefixo': 'OAB'},
@@ -40,7 +40,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                                           'prefixo': 'EXAME DE ORDEM'}
                              }
                   },
-          '104': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -2,
+          '104': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -2,'extrato_invertido': False,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
                   'pst_linha_cc_apl': 47,
                   'pst_linha_saldo_apl': 47, 'pst_saldo_apl': 2,
@@ -48,7 +48,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '1417-9': {'apl': {'apl1': 'RUBI'}, 'prefixo': 'FIDA'}
                              }
                   },
-          '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '237': {'pst_linha_cc': 2, 'pst_data': 1, 'pst_saldo_cc': -1,'extrato_invertido': False,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 9,
                   'pst_linha_saldo_apl': 25,  'pst_saldo_apl': 1,
@@ -56,7 +56,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '29384-9': {'apl': {'apl1': 'CDB-FACIL'}, 'prefixo': 'FIDA'}
                              }
                   },
-          '033': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '033': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,'extrato_invertido': False,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 11,
                   'pst_linha_saldo_apl': 24, 'pst_saldo_apl': 1,
@@ -64,13 +64,13 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                              '13.002958.2': {'apl': {'apl1': 'Resgate Autom', 'apl2': 'q.dispon'}, 'prefixo': 'FIDA'}
                              }
                   },
-          '041': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '041': {'pst_linha_cc': 3, 'pst_data': 1, 'pst_saldo_cc': -1,'extrato_invertido': False,
                   'cc_txt': True, 'apl_incluso': True, 'qt_linhas_busca_conta': 2,
                   'pst_linha_saldo_apl': 23, 'pst_saldo_apl': 1,
                   'contas': {'06.851005.0-6': {'apl': None, 'prefixo': 'OAB'}
                              }
                   },
-          '422': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '422': {'pst_linha_cc': 11, 'pst_data': 1, 'pst_saldo_cc': -1, 'extrato_invertido': True,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 2,
                   'pst_linha_cc_apl': 5,
                   'pst_linha_saldo_apl': 45, 'pst_saldo_apl': 2,
@@ -78,7 +78,7 @@ bancos = {'001': {'pst_linha_cc': 8, 'pst_data': 1, 'pst_saldo_cc': -2,
                                                  'apl3': 'EXECUTIVE'}, 'prefixo': 'FIDA'}
                              }
                   },
-          '748': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1,
+          '748': {'pst_linha_cc': 7, 'pst_data': 1, 'pst_saldo_cc': -1, 'extrato_invertido': False,
                   'cc_txt': True, 'apl_incluso': False, 'qt_linhas_busca_conta': 5,
                   'pst_linha_cc_apl': 3,
                   'pst_linha_saldo_apl': 20, 'pst_saldo_apl': 2,

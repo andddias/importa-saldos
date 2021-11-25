@@ -259,20 +259,25 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
 
     idx = len(dados_arquivo) - 1
     # Caso seja banco Banrisul, busca mes e ano a partir da função
-    if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
+    if conta == '06.851005.0-6':
         complemento_data = mes_ano_banrisul(dados_arquivo)
 
     # Caso seja banco Safra, busca ano a partir da função
-    if list(dados_banco.get('contas'))[0] == '23066-3':
+    if conta == '23066-3':
         complemento_data = ano_safra(dados_arquivo)
+
+    if dados_banco.get('extrato_invertido'):
+        inversor = -1
+    else:
+        inversor = 1
 
     while idx >= 0:
         # Obtendo dados da linha
-        dados_linha = dados_arquivo[idx]
+        dados_linha = dados_arquivo[inversor * idx]
         # Obtendo data apartir da função
         data_linha = obter_data(dados_linha, dados_banco)
         # Caso seja banco Banrisul, complementa dia recebido com complemento de mes e ano
-        if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
+        if conta == '06.851005.0-6':
             try:
                 # Tentando converter em inteiro para testar dia no formato valido
                 data_linha = int(data_linha)
@@ -298,7 +303,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
                 data_linha = '0'
             data_linha = data_linha + complemento_data
 
-        if list(dados_banco.get('contas'))[0] == '23066-3':
+        if conta == '23066-3':
             try:
                 # Tentando converter em inteiro para testar dia no formato valido
                 int(data_linha[0:2])
@@ -309,12 +314,12 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
 
         # Caso seja banco banrisul procura data inferior a data do sistema para pegar o saldo CC
         # Se linha de busca ultrapassar dados MOVIMENTOS DA CONTA CORRENTE buscará saldo pelo caso abaixo
-        if list(dados_banco.get('contas'))[0] == '06.851005.0-6' and (
-                'MOVIMENTOS DA CONTA CORRENTE' in dados_arquivo[idx]):
+        if conta == '06.851005.0-6' and (
+                'MOVIMENTOS DA CONTA CORRENTE' in dados_arquivo[inversor * idx]):
             i = 0
-            while 'SALDO ANT EM' not in dados_arquivo[idx + i] and idx + i < len(dados_arquivo):
+            while 'SALDO ANT EM' not in dados_arquivo[inversor * idx + i] and inversor * idx + i < len(dados_arquivo):
                 i += 1
-            dados = converte_dados_lista(dados_arquivo[idx + i])
+            dados = converte_dados_lista(dados_arquivo[inversor * idx + i])
             # Obtendo data de forma personalizada para condição e banco em especifico
             data_linha = dados[3]
             # Validando se string recebida é uma data, caso seja data será convertida em tipo date
@@ -329,12 +334,13 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
         # Caso seja banco Santander procura Saldo Disponível em Conta Corrente para pegar o saldo CC
         # Se linha de busca ultrapassar dados Não há lançamentos desta conta corrente para o período solicitado.
         # buscará saldo pelo caso abaixo
-        if list(dados_banco.get('contas'))[0] == '13.002957.5' and (
-                'amentos desta conta corrente para o per' in dados_arquivo[idx]):
+        if conta == '13.002957.5' and (
+                'amentos desta conta corrente para o per' in dados_arquivo[inversor * idx]):
             i = 0
-            while 'vel em Conta Corrente' not in dados_arquivo[idx + i] and idx + i < len(dados_arquivo):
+            while 'vel em Conta Corrente' not in dados_arquivo[inversor * idx + i] \
+                    and inversor * idx + i < len(dados_arquivo):
                 i += 1
-            dados = converte_dados_lista(dados_arquivo[idx + i])
+            dados = converte_dados_lista(dados_arquivo[inversor * idx + i])
 
             # Obtendo data de forma personalizada para condição e banco em especifico utilizando
             # a data de hoje -1 dia, pois nesse caso quando não há movimentacao não existe um data a buscar
@@ -351,11 +357,12 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
             if data_linha.toordinal() < data_hoje.toordinal():
                 # Caso seja banco banrisul procura data inferior a data do sistema para pegar o saldo CC
                 # A linha do saldo conta corrente obedece a personalização abaixo
-                if list(dados_banco.get('contas'))[0] == '06.851005.0-6':
+                if conta == '06.851005.0-6':
                     i = 0
-                    while 'SALDO NA DATA' not in dados_arquivo[idx + i] and idx + i < len(dados_arquivo):
+                    while 'SALDO NA DATA' not in dados_arquivo[inversor * idx + i] \
+                            and inversor * idx + i < len(dados_arquivo):
                         i += 1
-                    dados = dados_arquivo[idx + i]
+                    dados = dados_arquivo[inversor * idx + i]
                     # obtendo saldos cc
                     saldo_cc = obter_saldo_cc(dados, dados_banco)
                     # interrompendo busca while
@@ -363,7 +370,7 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
                 # Caso qualquer outro banco obtem o Saldo CC de maneira padrão
                 else:
                     # obtendo saldos cc
-                    saldo_cc = obter_saldo_cc(dados_arquivo[idx], dados_banco)
+                    saldo_cc = obter_saldo_cc(dados_arquivo[inversor * idx], dados_banco)
                     # interrompendo busca while
                     break
         idx -= 1
@@ -387,17 +394,6 @@ def saldos_conta(data_hoje, dados_arquivo, dados_banco, conta, apl_list):
     saldos = {'data': data_linha, 'saldo_cc': saldo_cc, 'apl': apl_list}
 
     return saldos
-
-
-def soma_saldos_apl(saldos):
-    valores = []
-    for saldo_apl in saldos:
-        saldo_apl = saldo_apl.replace('.', '')
-        saldo_apl = Decimal(saldo_apl.replace(',', '.'))
-        valores.append(saldo_apl)
-    saldo_apl = sum(valores)
-    saldo_apl = str(saldo_apl).replace('.', ',')
-    return saldo_apl
 
 
 def convert_ansi(file):
