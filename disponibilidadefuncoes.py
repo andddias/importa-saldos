@@ -84,9 +84,10 @@ def montar_nome_arquivo(apl_list):
     saldo_apl_rename = ''
     i = len(apl_list)
     for saldo_apl in apl_list.values():
-        saldo_apl_rename += saldo_apl
-        if i > 1:
-            saldo_apl_rename += '-'
+        if saldo_apl is not None:
+            saldo_apl_rename += saldo_apl
+            if i > 1:
+                saldo_apl_rename += '-'
         i -= 1
     return saldo_apl_rename.replace(',', '_')
 
@@ -401,4 +402,4 @@ def convert_ansi(file):
         s = open(file).read()
     except UnicodeDecodeError:
         s = open(file, mode='r', encoding='utf-8-sig').read()
-        open(file, mode='w', encoding='ansi').write(s)
+        open(file, mode='w', encoding='ansi', errors="ignore").write(s)
